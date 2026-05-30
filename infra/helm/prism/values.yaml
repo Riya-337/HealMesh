@@ -1,0 +1,33 @@
+# PRISM Helm Values
+
+n8n:
+  image: n8nio/n8n:latest
+  serviceType: LoadBalancer
+  storageSize: 1Gi
+  env:
+    dbType: postgresdb
+
+openclaw:
+  # This is the Middleware (Person C)
+  image: prism-middleware:latest
+  serviceType: ClusterIP
+
+frontend:
+  # This is for Person A (UI & Monitoring)
+  image: prism-frontend:latest
+  serviceType: LoadBalancer
+
+postgres:
+  image: postgres:14-alpine
+  password: n8npassword
+  storageSize: 1Gi
+
+redis:
+  image: redis:latest
+
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true

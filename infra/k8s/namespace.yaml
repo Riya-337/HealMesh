@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prism
+  labels:
+    name: prism
+    purpose: self-healing-mesh

@@ -1,0 +1,68 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-except-prism
+  namespace: prism
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-n8n-to-db
+  namespace: prism
+spec:
+  podSelector:
+    matchLabels:
+      app: n8n
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: n8n
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: postgres
+    - podSelector:
+        matchLabels:
+          app: redis
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-openclaw-to-db
+  namespace: prism
+spec:
+  podSelector:
+    matchLabels:
+      app: openclaw
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: postgres
+    - podSelector:
+        matchLabels:
+          app: redis
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-external-to-n8n
+  namespace: prism
+spec:
+  podSelector:
+    matchLabels:
+      app: n8n
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 0.0.0.0/0 # Open to triggers/webhook, adjust as needed
+    ports:
+    - protocol: TCP
+      port: 5678
