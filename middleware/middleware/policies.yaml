@@ -1,0 +1,20 @@
+# PRISM Policy Configuration
+policies:
+  - id: cluster-resource-check
+    name: "Low Cluster Resource Safety"
+    description: "Blocks redeployments if nodes are under high pressure."
+    check: "kubectl get nodes -o json | jq '.items[].status.conditions[] | select(.type==\"MemoryPressure\" or .type==\"DiskPressure\") | .status' | grep -q 'True'"
+    block_action: "REDEPLOY"
+    reason: "Cluster nodes are reporting Memory or Disk pressure. Scaling or redeploying may worsen the situation."
+
+  - id: prod-approval-gate
+    name: "Production Approval Gate"
+    description: "Requires manual approval for any action in the production namespace."
+    condition: "incident.namespace == 'production' or incident.environment == 'prod'"
+    action: "SET_APPROVAL_REQUIRED"
+
+  - id: critical-severity-gate
+    name: "Critical Severity Gate"
+    description: "Requires manual approval for critical incidents."
+    condition: "incident.severity == 'critical'"
+    action: "SET_APPROVAL_REQUIRED"
