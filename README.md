@@ -1,6 +1,6 @@
 # HealMesh
 
-**Self-healing enterprise automation mesh** — hackathon submission for the **OpenClaw** track under **Samsung PRISM**.
+**Self-healing enterprise automation mesh**
 
 **HealMesh** wires together **n8n** (workflows), **OpenClaw** (AI gateway and agents), and **Kubernetes** so operational failures can be **detected**, **reasoned about**, and **remediated** with optional human approval. The same pattern can extend to **data pipelines** (schema drift, ETL config updates) as a future layer.
 
