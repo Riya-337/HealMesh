@@ -1,0 +1,137 @@
+{
+  "name": "PRISM - Incident (OpenClaw placeholder + stub fallback)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "prism/incident",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "8f3c2a10-4b1e-4c9a-9f2d-1a2b3c4d5e6f",
+      "name": "IncidentWebhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "prism-incident-webhook"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const required = ['schema_version', 'incident_id', 'source', 'occurred_at', 'environment', 'summary'];\nconst raw = $input.first().json;\nconst body = raw.body && typeof raw.body === 'object' ? raw.body : raw;\nconst payload = body.schema_version ? body : raw;\nconst missing = required.filter((k) => payload[k] == null || payload[k] === '');\nif (missing.length) {\n  return [\n    {\n      json: {\n        ok: false,\n        error: 'validation_failed',\n        missing,\n        hint: 'See backend/CONTRACTS.md §3',\n      },\n    },\n  ];\n}\nreturn [{ json: { ok: true, incident: payload } }];"
+      },
+      "id": "a7e6d5c4-b3a2-1098-7654-3210fedcba98",
+      "name": "ValidateIncident",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://openclaw/v1/incidents/analyze",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.OPENCLAW_AUTH_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ schema_version: '1.0', incident_id: $json.incident.incident_id, incident: $json.incident, requested_actions: ['diagnose', 'propose_remediation'] }) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "c1d2e3f4-5061-7890-abcd-ef1234567890",
+      "name": "OpenClawAnalyze",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 300],
+      "disabled": true,
+      "notesInFlow": true,
+      "notes": "PLACEHOLDER: Person C confirms path + auth. Set n8n env OPENCLAW_AUTH_TOKEN (or use Credentials). Enable this node when ready. URL matches CONTRACTS.md §4 (provisional)."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const j = $input.first().json;\nif (j.ok === false) return [{ json: j }];\n\nconst incident = j.incident ?? $('ValidateIncident').first().json.incident;\nlet oc = j.body ?? j;\nif (j.body && typeof j.body === 'object' && !Array.isArray(j.body)) oc = j.body;\n\nconst looksLikeOpenClaw =\n  oc &&\n  typeof oc === 'object' &&\n  oc.diagnosis != null &&\n  oc.incident_id != null;\n\nif (looksLikeOpenClaw) {\n  return [\n    {\n      json: {\n        ok: true,\n        incident,\n        openclaw: oc,\n        _source: 'openclaw_http',\n      },\n    },\n  ];\n}\n\nconst stub = {\n  schema_version: '1.0',\n  incident_id: incident.incident_id,\n  diagnosis:\n    '[stub] OpenClawAnalyze is disabled or response shape did not match §4. Enable node + fix URL/auth with Person C.',\n  confidence: 0.5,\n  remediation: {\n    action: 'NONE',\n    target: '',\n    namespace: incident.namespace || 'prism',\n    payload: '',\n  },\n  policy_flags: {\n    requires_approval: true,\n    block_reason: 'Stub / pass-through — no auto-remediation',\n  },\n};\nreturn [\n  {\n    json: {\n      ok: true,\n      incident,\n      openclaw: stub,\n      _source: 'stub',\n    },\n  },\n];"
+      },
+      "id": "d2e3f4a5-6172-8901-bcde-f12345678901",
+      "name": "MapOpenClawOrStub",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "b8f7e6d5-c4b3-a210-9876-543210fedcba",
+      "name": "RespondToWebhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1200, 300]
+    }
+  ],
+  "connections": {
+    "IncidentWebhook": {
+      "main": [
+        [
+          {
+            "node": "ValidateIncident",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ValidateIncident": {
+      "main": [
+        [
+          {
+            "node": "OpenClawAnalyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenClawAnalyze": {
+      "main": [
+        [
+          {
+            "node": "MapOpenClawOrStub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MapOpenClawOrStub": {
+      "main": [
+        [
+          {
+            "node": "RespondToWebhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
