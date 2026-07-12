@@ -1,0 +1,31 @@
+{
+  "incident": {
+    "pod_name": "checkout-service (deployment)",
+    "namespace": "production",
+    "failure_type": "FailedRollout",
+    "detected_at": "2026-07-04T09:00:00Z",
+    "container_statuses": [
+      {
+        "name": "checkout",
+        "image": "checkout:v5.0.0",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "ERROR: Readiness probe failed: HTTP probe failed with statuscode: 500",
+      "ERROR: Readiness probe failed: HTTP probe failed with statuscode: 500",
+      "ERROR: Readiness probe failed: HTTP probe failed with statuscode: 500"
+    ],
+    "deployment_name": "checkout-service",
+    "desired_replicas": 3,
+    "ready_replicas": 0,
+    "image": "checkout:v5.0.0"
+  },
+  "expected": {
+    "root_cause_keywords": ["readiness", "probe", "failing", "500", "rollout"],
+    "confidence_min": "high",
+    "action_type": "REDEPLOY",
+    "notes": "New version v5.0.0 readiness probe failing — rollback to previous version"
+  }
+}

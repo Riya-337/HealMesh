@@ -1,0 +1,1259 @@
+{
+  "run_id": "20260711_092323",
+  "timestamp": "2026-07-11T09:31:37.480885+00:00",
+  "healmesh_core_url": "http://127.0.0.1:8000",
+  "total_cases": 32,
+  "passed": 27,
+  "failed": 5,
+  "accuracy": 0.8438,
+  "accuracy_pct": "84.4%",
+  "phase_gate_threshold": "80%",
+  "phase_gate_passed": true,
+  "breakdown": {
+    "keyword_match_rate": "27/32",
+    "action_match_rate": "32/32",
+    "confidence_ok_rate": "32/32"
+  },
+  "results": [
+    {
+      "case_id": "clb_001_db_connection_refused",
+      "case_file": "crash_loop/clb_001_db_connection_refused.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The application failed to connect to the database due to a connection refused error, which caused a panic and subsequent exit. The database connection was refused.",
+        "action_returned": "NONE",
+        "confidence_returned": "medium",
+        "keywords_expected": [
+          "database",
+          "connection",
+          "refused"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "12f52f99-635b-46bb-b71d-d1d8931d4290",
+        "incident_id": "e6377116-c392-4810-aa0c-9dacfbbaa09e",
+        "created_at": "2026-07-11T09:23:24.010181",
+        "root_cause": "The application failed to connect to the database due to a connection refused error, which caused a panic and subsequent exit. The database connection was refused.",
+        "confidence": "medium",
+        "suggested_manual_command": "kubectl logs payment-api-7d9f8b-xk2pq -c payment-api",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 395,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_002_missing_env_var",
+      "case_file": "crash_loop/clb_002_missing_env_var.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The application failed to start due to a missing required environment variable JWT_SECRET in the production environment. The environment variable JWT_SECRET is missing.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "environment",
+          "variable",
+          "missing",
+          "JWT_SECRET"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "bba82e85-9305-473f-a35d-8a839b3950bb",
+        "incident_id": "2f11e92f-f4d8-440a-a7d2-96c71b838b0a",
+        "created_at": "2026-07-11T09:23:40.230090",
+        "root_cause": "The application failed to start due to a missing required environment variable JWT_SECRET in the production environment. The environment variable JWT_SECRET is missing.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl exec -it auth-service-5c8d9f-mn3rt -- /bin/bash -c 'export JWT_SECRET=<insert_secret_here> && /app/auth-service'",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 423,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_003_oom_causing_crash_loop",
+      "case_file": "crash_loop/clb_003_oom_causing_crash_loop.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The application attempted to load a large amount of data into memory, exceeding the configured memory limit and resulting in an Out-Of-Memory (OOM) kill. The container exceeded memory limit and was OOM killed.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "OOM",
+          "limit",
+          "killed"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "88f69b65-c6f9-4dac-8198-a391b576bfe6",
+        "incident_id": "fe55e4e8-ea7d-4df8-95a1-db53d1b2ce9a",
+        "created_at": "2026-07-11T09:23:56.133877",
+        "root_cause": "The application attempted to load a large amount of data into memory, exceeding the configured memory limit and resulting in an Out-Of-Memory (OOM) kill. The container exceeded memory limit and was OOM killed.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod worker-6bf7c9-pq8wx -n staging",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 459,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_004_liveness_probe_killing_pod",
+      "case_file": "crash_loop/clb_004_liveness_probe_killing_pod.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The application is not responding to liveness probe requests due to a high error rate, causing the container to be killed due to exceeding memory limit and was OOM killed.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "liveness",
+          "probe",
+          "failing",
+          "503"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "274e83e3-f804-46a7-8a31-35e6947fa0f1",
+        "incident_id": "243c055c-ef7a-450b-a6b5-9abb78a4fc30",
+        "created_at": "2026-07-11T09:24:12.026606",
+        "root_cause": "The application is not responding to liveness probe requests due to a high error rate, causing the container to be killed due to exceeding memory limit and was OOM killed.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -f api-gateway-9bc4d2-zr6ys -c api-gateway",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 319,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_005_file_permission_error",
+      "case_file": "crash_loop/clb_005_file_permission_error.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod is experiencing a CrashLoopBackOff due to a PermissionError when trying to load a model file, indicating a permission issue with the model file. Permission denied to access the model file.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "permission",
+          "denied",
+          "model",
+          "file"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "457eb1ec-6c1c-4d0d-9e1d-72bb062da8f7",
+        "incident_id": "d90560f5-2f9a-4def-8371-133923be015c",
+        "created_at": "2026-07-11T09:24:27.927373",
+        "root_cause": "The pod is experiencing a CrashLoopBackOff due to a PermissionError when trying to load a model file, indicating a permission issue with the model file. Permission denied to access the model file.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl exec -it ml-inference-8ad3f1-kw9vx -- /bin/bash -c 'ls /models/bert-large-uncased'",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 428,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_006_config_map_missing",
+      "case_file": "crash_loop/clb_006_config_map_missing.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The application failed to start due to a missing required configuration key 'APP_CONFIG_FILE' in the ConfigMap 'app-config'. The ConfigMap is missing the APP_CONFIG_FILE configuration.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "ConfigMap",
+          "APP_CONFIG_FILE",
+          "missing",
+          "configuration"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "7226b92a-ef50-4ccb-ba9c-7eae2376be9b",
+        "incident_id": "40bf358a-958e-4a83-90df-a98d96fd8683",
+        "created_at": "2026-07-11T09:24:43.924189",
+        "root_cause": "The application failed to start due to a missing required configuration key 'APP_CONFIG_FILE' in the ConfigMap 'app-config'. The ConfigMap is missing the APP_CONFIG_FILE configuration.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -n production config-service-8a3d7f-mw5qr -c config-service",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 330,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_007_port_already_in_use",
+      "case_file": "crash_loop/clb_007_port_already_in_use.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The application failed to start due to a port conflict, as the port 8080 is already in use (EADDRINUSE).",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "EADDRINUSE",
+          "port",
+          "8080",
+          "already in use"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "4bfb2127-0ecc-40b2-8c41-e9b5e9485b24",
+        "incident_id": "3a6b72be-66df-43dc-8b2d-dd7e595db134",
+        "created_at": "2026-07-11T09:24:59.810480",
+        "root_cause": "The application failed to start due to a port conflict, as the port 8080 is already in use (EADDRINUSE).",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod api-gateway-6b4c9a-pj7xt -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 385,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_008_bad_command_entrypoint",
+      "case_file": "crash_loop/clb_008_bad_command_entrypoint.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The application failed to start due to an entrypoint /app/start.sh not found, returning exit code 127.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "entrypoint",
+          "/app/start.sh",
+          "not found",
+          "127"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "85c08f63-6f29-41fd-b396-e1df4864b51b",
+        "incident_id": "be4c7636-5d64-42f2-98f5-e2bec2d94a94",
+        "created_at": "2026-07-11T09:25:15.849267",
+        "root_cause": "The application failed to start due to an entrypoint /app/start.sh not found, returning exit code 127.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -f worker-service-2cf5e1-hq9nz -c worker-service -n staging",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 280,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_009_redis_connection_refused",
+      "case_file": "crash_loop/clb_009_redis_connection_refused.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod is experiencing a CrashLoopBackOff due to a failed Redis connection, which is causing the session service to fail. Redis session store connection refused on port 6379.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "Redis",
+          "connection refused",
+          "6379",
+          "session store"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "fa40e6c3-caa3-4371-8c89-9794cc5fd72a",
+        "incident_id": "5f8224e4-55df-4982-b3f8-0f81b9f6919d",
+        "created_at": "2026-07-11T09:25:31.827621",
+        "root_cause": "The pod is experiencing a CrashLoopBackOff due to a failed Redis connection, which is causing the session service to fail. Redis session store connection refused on port 6379.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs session-service-1dc8b4-fk7qm -c session-service -f",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 320,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_010_ssl_cert_expired",
+      "case_file": "crash_loop/clb_010_ssl_cert_expired.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The pod is experiencing a CrashLoopBackOff due to a failed SSL/TLS handshake caused by an expired certificate. The entrypoint /app/start.sh was not found, returning exit code 127.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "x509",
+          "certificate",
+          "expired",
+          "TLS"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "cca2cd73-e9bd-4f84-b880-33d62845be52",
+        "incident_id": "21b4b897-f1e0-4203-be54-53bd0a2dff55",
+        "created_at": "2026-07-11T09:25:47.599243",
+        "root_cause": "The pod is experiencing a CrashLoopBackOff due to a failed SSL/TLS handshake caused by an expired certificate. The entrypoint /app/start.sh was not found, returning exit code 127.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -f notification-svc-7ec4d1-jb8nq -c notification-svc",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 323,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_001_readiness_probe_failing",
+      "case_file": "failed_rollout/fro_001_readiness_probe_failing.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The deployment failed to reach the desired state due to a failing readiness probe returning 500. The rollout failed due to a failing readiness probe returning 500.",
+        "action_returned": "REDEPLOY",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "readiness",
+          "probe",
+          "failing",
+          "500",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "b8077257-0994-4488-92d0-de3cb2a25b86",
+        "incident_id": "8c359ffa-7ed3-4747-944a-785c8e441c88",
+        "created_at": "2026-07-11T09:26:03.680624",
+        "root_cause": "The deployment failed to reach the desired state due to a failing readiness probe returning 500. The rollout failed due to a failing readiness probe returning 500.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl rollout undo deployment checkout-service --namespace production",
+        "parsed_action": {
+          "action_type": "REDEPLOY",
+          "params": {
+            "deployment_name": "checkout-service",
+            "namespace": "production"
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 426,
+        "action_type": "REDEPLOY"
+      }
+    },
+    {
+      "case_id": "fro_002_bad_image_tag",
+      "case_file": "failed_rollout/fro_002_bad_image_tag.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The rollout failed during readiness check due to a YAML config validation parse error. The image 'orders:v3.2.0-bad-image' used in the order-service deployment does not exist, causing a failed image pull.",
+        "action_returned": "REDEPLOY",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "pull",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "e934b814-1275-4586-b41c-ed00e9036400",
+        "incident_id": "1e2c8062-23a8-46d2-8944-b8b3195a0563",
+        "created_at": "2026-07-11T09:26:19.583386",
+        "root_cause": "The rollout failed during readiness check due to a YAML config validation parse error. The image 'orders:v3.2.0-bad-image' used in the order-service deployment does not exist, causing a failed image pull.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl rollout undo deployment order-service --namespace production",
+        "parsed_action": {
+          "action_type": "REDEPLOY",
+          "params": {
+            "deployment_name": "order-service",
+            "namespace": "production"
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 438,
+        "action_type": "REDEPLOY"
+      }
+    },
+    {
+      "case_id": "fro_003_insufficient_cpu",
+      "case_file": "failed_rollout/fro_003_insufficient_cpu.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The rollout is pending due to insufficient cpu resources on nodes. The deployment is unable to scale due to insufficient cpu resources on nodes.",
+        "action_returned": "SCALE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "insufficient",
+          "cpu",
+          "nodes",
+          "resources",
+          "pending"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "79bf75fd-d64f-4117-8d19-92c64d9cd798",
+        "incident_id": "70626fc1-ead6-4a07-8ac4-3e4416e939d6",
+        "created_at": "2026-07-11T09:26:35.371958",
+        "root_cause": "The rollout is pending due to insufficient cpu resources on nodes. The deployment is unable to scale due to insufficient cpu resources on nodes.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl scale deployment inventory-service --replicas=3 -n production",
+        "parsed_action": {
+          "action_type": "SCALE",
+          "params": {
+            "deployment_name": "inventory-service",
+            "namespace": "production",
+            "replica_count": 3
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 333,
+        "action_type": "SCALE"
+      }
+    },
+    {
+      "case_id": "fro_004_insufficient_memory",
+      "case_file": "failed_rollout/fro_004_insufficient_memory.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The rollout failure is caused by insufficient memory on all available nodes, preventing the deployment of the analytics-worker pod. Insufficient memory of 8Gi on nodes for scheduling.",
+        "action_returned": "SCALE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "Insufficient memory",
+          "nodes",
+          "8Gi",
+          "scheduling"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "8d0e2e17-533b-428b-bffd-de5cf3f6c72c",
+        "incident_id": "292e05d4-684f-4a10-8126-ac70065d33fa",
+        "created_at": "2026-07-11T09:26:51.190846",
+        "root_cause": "The rollout failure is caused by insufficient memory on all available nodes, preventing the deployment of the analytics-worker pod. Insufficient memory of 8Gi on nodes for scheduling.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl scale deployment analytics-worker --replicas=3 -n production",
+        "parsed_action": {
+          "action_type": "SCALE",
+          "params": {
+            "deployment_name": "analytics-worker",
+            "namespace": "production",
+            "replica_count": 3
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 351,
+        "action_type": "SCALE"
+      }
+    },
+    {
+      "case_id": "fro_005_config_validation_error",
+      "case_file": "failed_rollout/fro_005_config_validation_error.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The deployment failed to start due to a failing readiness probe returning 500. The rollout failed due to a failing readiness probe returning 500.",
+        "action_returned": "REDEPLOY",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "config",
+          "YAML",
+          "parse error",
+          "validation",
+          "readiness"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "56319db3-6671-4b9e-b53f-effb88c4b33f",
+        "incident_id": "df21cc3d-e763-4e4b-ae10-5e4a08389550",
+        "created_at": "2026-07-11T09:27:07.066404",
+        "root_cause": "The deployment failed to start due to a failing readiness probe returning 500. The rollout failed due to a failing readiness probe returning 500.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl rollout undo deployment order-service --namespace production",
+        "parsed_action": {
+          "action_type": "REDEPLOY",
+          "params": {
+            "deployment_name": "order-service",
+            "namespace": "production"
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 400,
+        "action_type": "REDEPLOY"
+      }
+    },
+    {
+      "case_id": "fro_006_pending_pvc",
+      "case_file": "failed_rollout/fro_006_pending_pvc.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The rollout is Pending because the PersistentVolumeClaim PVC is not bound. The PersistentVolumeClaim 'app-data-pvc' is not bound: no PersistentVolume available matching requested storage class and capacity.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "PersistentVolumeClaim",
+          "PVC",
+          "not bound",
+          "Pending"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "3f8c7119-8bc5-41e6-93d4-aada93fcbe1c",
+        "incident_id": "bda9950a-9726-4034-b3b0-440807d6e24c",
+        "created_at": "2026-07-11T09:27:22.834033",
+        "root_cause": "The rollout is Pending because the PersistentVolumeClaim PVC is not bound. The PersistentVolumeClaim 'app-data-pvc' is not bound: no PersistentVolume available matching requested storage class and capacity.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pvc app-data-pvc -n staging",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 328,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_001_tag_not_found",
+      "case_file": "image_pull/ipb_001_tag_not_found.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The image 'myregistry.io/frontend:v9.9.9' was not found. The image tag 'v9.9.9' was not found in the registry.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "tag",
+          "v9.9.9"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "79a923e5-02bd-4d45-99f4-798a54520ee0",
+        "incident_id": "e891f7ac-065c-4e7b-8e2b-3d61f5c90565",
+        "created_at": "2026-07-11T09:27:38.602567",
+        "root_cause": "The image 'myregistry.io/frontend:v9.9.9' was not found. The image tag 'v9.9.9' was not found in the registry.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs frontend-deploy-5d8f9c-rv2kn -c frontend",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 326,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_002_registry_auth_failure",
+      "case_file": "image_pull/ipb_002_registry_auth_failure.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod backend-api-3ac7e2-qx5nt in namespace production failed to pull the image private.registry.corp/backend:v1.4.2 due to a 401 Unauthorized error, indicating missing registry credentials. Registry pull returned 401 unauthorized, missing registry credentials imagePullSecret.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "401",
+          "unauthorized",
+          "registry",
+          "credentials",
+          "imagePullSecret"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "a4100506-04b3-4beb-b589-c1ccb4f72bac",
+        "incident_id": "06af4abe-850e-4e6b-a5de-5e63bd8754b3",
+        "created_at": "2026-07-11T09:27:54.477832",
+        "root_cause": "The pod backend-api-3ac7e2-qx5nt in namespace production failed to pull the image private.registry.corp/backend:v1.4.2 due to a 401 Unauthorized error, indicating missing registry credentials. Registry pull returned 401 unauthorized, missing registry credentials imagePullSecret.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs backend-api-3ac7e2-qx5nt -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 373,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_003_gcr_iam_permission",
+      "case_file": "image_pull/ipb_003_gcr_iam_permission.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The root cause of the failure is a permission issue with the service account used by the pod, resulting in a 403 Forbidden error when trying to pull the image from GCR. GCR returned 403 forbidden for service account permission.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "403",
+          "forbidden",
+          "service account",
+          "permission",
+          "GCR"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "9e5548e5-ee63-420a-a5d4-e6cce08e9906",
+        "incident_id": "9023a225-ab73-4d73-adad-f69b3e78a229",
+        "created_at": "2026-07-11T09:28:10.654188",
+        "root_cause": "The root cause of the failure is a permission issue with the service account used by the pod, resulting in a 403 Forbidden error when trying to pull the image from GCR. GCR returned 403 forbidden for service account permission.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe sa ml-trainer-sa -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 400,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_004_typo_in_image_name",
+      "case_file": "image_pull/ipb_004_typo_in_image_name.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The image ngnix was not found due to a typo. The Docker registry does not have a repository named 'docker.io/library/ngnix:1.25.3' because 'ngnix' should be 'nginx'.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "ngnix",
+          "typo",
+          "image",
+          "not found"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "f98a7d35-8c9a-4eaa-a8f7-9dac3fb1df3c",
+        "incident_id": "7792c1cc-91a4-4d87-9e07-01302b903e0c",
+        "created_at": "2026-07-11T09:28:26.621830",
+        "root_cause": "The image ngnix was not found due to a typo. The Docker registry does not have a repository named 'docker.io/library/ngnix:1.25.3' because 'ngnix' should be 'nginx'.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -f web-frontend-4af1c9-rz3ew -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 375,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_005_docker_hub_rate_limit",
+      "case_file": "image_pull/ipb_005_docker_hub_rate_limit.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The Docker Hub rate limit was exceeded due to a high pull rate, resulting in a 429 status code. Docker Hub returned 429 rate limit (toomanyrequests).",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "rate limit",
+          "429",
+          "Docker Hub",
+          "toomanyrequests"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "66cf7c00-0bd8-40df-9722-84538df131b9",
+        "incident_id": "85b03ecd-432d-4d1b-9b24-7d44b1586397",
+        "created_at": "2026-07-11T09:28:42.502220",
+        "root_cause": "The Docker Hub rate limit was exceeded due to a high pull rate, resulting in a 429 status code. Docker Hub returned 429 rate limit (toomanyrequests).",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod batch-runner-7bc3d2-kn4ql -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 400,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_001_large_dataset",
+      "case_file": "oom_killed/oom_001_large_dataset.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The data-processor pod exceeded its memory limit, causing an Out-Of-Memory (OOM) kill. Exceeded memory limit with OOM 512Mi.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "limit",
+          "OOM",
+          "512Mi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "0926902b-b1d8-4eff-86a7-86c4a0c9a996",
+        "incident_id": "c5bfd31a-3e30-49c0-b93e-f974c37f3b8c",
+        "created_at": "2026-07-11T09:28:58.374522",
+        "root_cause": "The data-processor pod exceeded its memory limit, causing an Out-Of-Memory (OOM) kill. Exceeded memory limit with OOM 512Mi.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod data-processor-3ef6b8-jt4mn -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 346,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_002_memory_leak_cache",
+      "case_file": "oom_killed/oom_002_memory_leak_cache.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The cache-service pod in the production namespace experienced an unbounded memory leak in the cache triggered eviction.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "cache",
+          "memory",
+          "leak",
+          "eviction",
+          "unbounded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "84327c8a-9eaf-4496-b4fc-fa0014e8a631",
+        "incident_id": "3c1f821b-8c78-4374-a0f6-cb2a02e9b301",
+        "created_at": "2026-07-11T09:29:14.144582",
+        "root_cause": "The cache-service pod in the production namespace experienced an unbounded memory leak in the cache triggered eviction.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -f cache-service-4bc9e1-wr2kp -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 315,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_003_image_processing",
+      "case_file": "oom_killed/oom_003_image_processing.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod exceeded its memory limit during image processing with large buffer. The image-resizer container was unable to allocate sufficient memory to process the RAW file.",
+        "action_returned": "NONE",
+        "confidence_returned": "medium",
+        "keywords_expected": [
+          "memory",
+          "image",
+          "processing",
+          "large",
+          "buffer"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "813f7f8e-a821-4ac5-bb03-d83e4792a013",
+        "incident_id": "bcccf271-84a9-466f-8a88-214e3937c50e",
+        "created_at": "2026-07-11T09:29:30.135456",
+        "root_cause": "The pod exceeded its memory limit during image processing with large buffer. The image-resizer container was unable to allocate sufficient memory to process the RAW file.",
+        "confidence": "medium",
+        "suggested_manual_command": "kubectl describe pod image-resizer-7c2d4a-nb8qr -n media",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 401,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_004_jvm_heap",
+      "case_file": "oom_killed/oom_004_jvm_heap.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The Java application exceeded its memory limit of 2Gi, causing a JVM heap OutOfMemoryError with -Xmx4g limit and 2Gi usage.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "JVM",
+          "heap",
+          "-Xmx4g",
+          "OutOfMemoryError",
+          "2Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "8333c028-3598-47d6-97fd-c1f46c5d4ffe",
+        "incident_id": "a0cebde6-9189-48d8-a7f0-4e4bd83d97c5",
+        "created_at": "2026-07-11T09:29:46.093869",
+        "root_cause": "The Java application exceeded its memory limit of 2Gi, causing a JVM heap OutOfMemoryError with -Xmx4g limit and 2Gi usage.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod java-backend-5e7c3b-lx8kp -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 408,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_005_numpy_array_explosion",
+      "case_file": "oom_killed/oom_005_numpy_array_explosion.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The ml-trainer pod exceeded its memory limit due to a numpy array MemoryError caused OOMKilled.",
+        "action_returned": "NONE",
+        "confidence_returned": "medium",
+        "keywords_expected": [
+          "numpy",
+          "MemoryError",
+          "array",
+          "OOMKilled"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "7bd84add-31f5-4139-bad7-586563c2ed2f",
+        "incident_id": "2ebfdf47-26ef-4550-8f0d-c8a822f510ed",
+        "created_at": "2026-07-11T09:30:01.966955",
+        "root_cause": "The ml-trainer pod exceeded its memory limit due to a numpy array MemoryError caused OOMKilled.",
+        "confidence": "medium",
+        "suggested_manual_command": "kubectl describe pod ml-trainer-9d2a4f-bv6ys -n data",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 414,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_006_node_pressure",
+      "case_file": "oom_killed/oom_006_node_pressure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The pod log-aggregator-4fe2a9-cs1hb was evicted due to node memory pressure threshold. The node was low on resource: memory.",
+        "action_returned": "NONE",
+        "confidence_returned": "medium",
+        "keywords_expected": [
+          "node memory pressure",
+          "eviction",
+          "threshold",
+          "memory"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "9ec406dc-7d51-412c-9dd4-a1a32447759b",
+        "incident_id": "6901f076-98f9-4960-9dd0-18b6bd554326",
+        "created_at": "2026-07-11T09:30:17.736966",
+        "root_cause": "The pod log-aggregator-4fe2a9-cs1hb was evicted due to node memory pressure threshold. The node was low on resource: memory.",
+        "confidence": "medium",
+        "suggested_manual_command": "kubectl describe node worker-03 | grep -i memory",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 356,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_001_pod_count_limit",
+      "case_file": "quota_exceeded/qex_001_pod_count_limit.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The resource quota for the production namespace has been exceeded due to the current pod count limit of 10 pods. Resource quota exceeded the pod count limit.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "pods",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "0b8a57ca-4bd9-4831-be29-1d3982d9af41",
+        "incident_id": "a9be5d96-8ed2-4e07-a259-436ff522de88",
+        "created_at": "2026-07-11T09:30:33.609324",
+        "root_cause": "The resource quota for the production namespace has been exceeded due to the current pod count limit of 10 pods. Resource quota exceeded the pod count limit.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe quota production-quota -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 406,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_002_cpu_quota",
+      "case_file": "quota_exceeded/qex_002_cpu_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Resource quota exceeded for cpu requests. Resource quota exceeded for cpu requests.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "cpu",
+          "requests",
+          "exceeded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "e7bf568f-a621-4c30-b8ce-4e4e63b059b7",
+        "incident_id": "cc146b43-572d-480e-baf3-94a76e602319",
+        "created_at": "2026-07-11T09:30:49.481592",
+        "root_cause": "Resource quota exceeded for cpu requests. Resource quota exceeded for cpu requests.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe quota analytics-quota --namespace analytics",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 300,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_003_memory_quota",
+      "case_file": "quota_exceeded/qex_003_memory_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Resource quota exceeded for memory due to high memory usage by the model-serving-1ca8b4-dx3yp pod, Resource quota exceeded for memory Gi limit.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "memory",
+          "exceeded",
+          "Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "1a4e584d-593e-4db8-909c-c1b3452fa8d2",
+        "incident_id": "e9e36d3b-a0f7-4db0-9abe-6ee467ec009b",
+        "created_at": "2026-07-11T09:31:05.378833",
+        "root_cause": "Resource quota exceeded for memory due to high memory usage by the model-serving-1ca8b4-dx3yp pod, Resource quota exceeded for memory Gi limit.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe quota ml-quota -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 293,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_004_pvc_quota",
+      "case_file": "quota_exceeded/qex_004_pvc_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Resource quota exceeded persistentvolumeclaims limit. The production namespace has reached its persistentvolumeclaims limit of 5.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "persistentvolumeclaims",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "0902460c-0585-4f21-b763-ef0cf2c3a49a",
+        "incident_id": "4a31f3bc-a03e-42f5-8145-a84268719e09",
+        "created_at": "2026-07-11T09:31:21.226638",
+        "root_cause": "Resource quota exceeded persistentvolumeclaims limit. The production namespace has reached its persistentvolumeclaims limit of 5.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota production-quota -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 303,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_005_services_quota",
+      "case_file": "quota_exceeded/qex_005_services_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Resource quota exceeded for services loadbalancers. Resource quota exceeded for services loadbalancers.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "loadbalancers",
+          "exceeded",
+          "services"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "1607a2a1-a9f2-41c7-982b-863a1ece681a",
+        "incident_id": "4b0ddb4c-c4f4-4144-a4d8-638d8c48207f",
+        "created_at": "2026-07-11T09:31:37.104368",
+        "root_cause": "Resource quota exceeded for services loadbalancers. Resource quota exceeded for services loadbalancers.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota services-quota -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 415,
+        "action_type": "NONE"
+      }
+    }
+  ]
+}

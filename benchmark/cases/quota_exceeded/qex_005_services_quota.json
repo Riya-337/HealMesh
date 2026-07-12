@@ -1,0 +1,20 @@
+{
+  "incident": {
+    "pod_name": "lb-provisioner-8dc1f3-wp2tv",
+    "namespace": "services",
+    "failure_type": "ResourceQuotaExceeded",
+    "detected_at": "2026-07-07T05:55:00Z",
+    "log_lines": [
+      "Error from server (Forbidden): services \"external-lb-3\" is forbidden: exceeded quota: services-quota, requested: services.loadbalancers=1, used: services.loadbalancers=2, limited: services.loadbalancers=2"
+    ],
+    "quota_resource": "services.loadbalancers",
+    "quota_limit": "2",
+    "quota_used": "2"
+  },
+  "expected": {
+    "root_cause_keywords": ["quota", "loadbalancers", "exceeded", "services"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "LoadBalancer service quota exhausted at limit of 2 — consolidate behind an ingress controller or request quota increase"
+  }
+}

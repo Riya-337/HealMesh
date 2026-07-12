@@ -1,0 +1,31 @@
+{
+  "incident": {
+    "pod_name": "storage-app (deployment)",
+    "namespace": "staging",
+    "failure_type": "FailedRollout",
+    "detected_at": "2026-07-07T02:30:00Z",
+    "container_statuses": [
+      {
+        "name": "storage-app",
+        "image": "storage-app:v1.8.0",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "Warning: FailedMount — Unable to attach or mount volumes: timed out waiting for the condition",
+      "0/3 nodes are available: 3 node(s) had volume node affinity conflict.",
+      "PersistentVolumeClaim 'app-data-pvc' is not bound: no PersistentVolume available matching requested storage class and capacity"
+    ],
+    "deployment_name": "storage-app",
+    "desired_replicas": 2,
+    "ready_replicas": 0,
+    "image": "storage-app:v1.8.0"
+  },
+  "expected": {
+    "root_cause_keywords": ["PersistentVolumeClaim", "PVC", "not bound", "Pending"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "PVC is unbound because no matching PersistentVolume is available — storage provisioner must be configured or a PV created manually"
+  }
+}

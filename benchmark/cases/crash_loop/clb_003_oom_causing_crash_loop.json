@@ -1,0 +1,36 @@
+{
+  "incident": {
+    "pod_name": "worker-6bf7c9-pq8wx",
+    "namespace": "staging",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-01T12:00:00Z",
+    "container_statuses": [
+      {
+        "name": "worker",
+        "image": "worker:v3.1.0",
+        "restart_count": 8,
+        "ready": false,
+        "last_exit_code": 137,
+        "last_termination_reason": "OOMKilled"
+      }
+    ],
+    "log_lines": [
+      "INFO: Starting batch processing job",
+      "INFO: Loading 500000 records into memory",
+      "INFO: Processing chunk 1/10...",
+      "Killed"
+    ],
+    "resource_limits": {
+      "cpu_request": "200m",
+      "cpu_limit": "1000m",
+      "memory_request": "256Mi",
+      "memory_limit": "256Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["memory", "OOM", "limit", "killed"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "OOM causing crash loop — memory limit too low for workload"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "timestamp": "20260708_072459",
+  "cluster": "healmesh-test",
+  "core_url": "http://localhost:8000",
+  "pass": 27,
+  "fail": 0,
+  "skip": 1,
+  "fr3_timing_ms": {
+    "p50": 0,
+    "p95": 0,
+    "max": 0,
+    "target_ms": 30000
+  },
+  "diagnosis_latency_ms": {"CrashLoopBackOff":0,"OOMKilled":0,"ImagePullBackOff":0,"FailedRollout":0,"ResourceQuotaExceeded":0}},
+  "results": [{"test":"cluster_reachable","status":"pass"},{"test":"test_namespace_created","status":"pass"},{"test":"healmesh_core_healthy","status":"pass"},{"test":"rbac_deny_patch_pods","status":"pass"},{"test":"rbac_deny_update_pods","status":"pass"},{"test":"rbac_deny_delete_pods","status":"pass"},{"test":"rbac_deny_create_pods","status":"pass"},{"test":"rbac_deny_patch_deployments","status":"pass"},{"test":"rbac_deny_update_deployments","status":"pass"},{"test":"rbac_deny_delete_deployments","status":"pass"},{"test":"rbac_deny_create_deployments","status":"pass"},{"test":"rbac_deny_patch_secrets","status":"pass"},{"test":"rbac_deny_get_secrets","status":"pass"},{"test":"rbac_allow_get_pods","status":"pass"},{"test":"rbac_allow_list_pods","status":"pass"},{"test":"rbac_allow_watch_pods","status":"pass"},{"test":"rbac_allow_get_events","status":"pass"},{"test":"rbac_allow_list_events","status":"pass"},{"test":"rbac_allow_watch_events","status":"pass"},{"test":"inject_crash_loop_detected_by_cluster","status":"pass"},{"test":"diagnosis_CrashLoopBackOff","status":"pass"},{"test":"diagnosis_OOMKilled","status":"pass"},{"test":"diagnosis_ImagePullBackOff","status":"pass"},{"test":"diagnosis_FailedRollout","status":"pass"},{"test":"diagnosis_ResourceQuotaExceeded","status":"pass"},{"test":"fr3_timing_p95_under_30s","status":"pass"},{"test":"fr3_slack_delivery","status":"skip","reason":"SLACK_BOT_TOKEN not set — Slack latency not measurable. Set token in .env to verify full FR-3."},{"test":"test_namespace_cleaned_up","status":"pass"}]
+}

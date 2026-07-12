@@ -1,0 +1,20 @@
+{
+  "incident": {
+    "pod_name": "media-uploader-3ba7c5-dn9sv",
+    "namespace": "production",
+    "failure_type": "ResourceQuotaExceeded",
+    "detected_at": "2026-07-07T04:10:00Z",
+    "log_lines": [
+      "Error from server (Forbidden): persistentvolumeclaims \"media-data-pvc-6\" is forbidden: exceeded quota: production-quota, requested: persistentvolumeclaims=1, used: persistentvolumeclaims=5, limited: persistentvolumeclaims=5"
+    ],
+    "quota_resource": "persistentvolumeclaims",
+    "quota_limit": "5",
+    "quota_used": "5"
+  },
+  "expected": {
+    "root_cause_keywords": ["quota", "persistentvolumeclaims", "exceeded", "limit"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "PVC count quota exhausted at limit of 5 — delete unused PVCs or request quota increase from cluster admin"
+  }
+}

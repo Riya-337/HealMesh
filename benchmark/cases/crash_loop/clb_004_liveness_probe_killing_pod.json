@@ -1,0 +1,42 @@
+{
+  "incident": {
+    "pod_name": "api-gateway-9bc4d2-zr6ys",
+    "namespace": "production",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-01T13:00:00Z",
+    "container_statuses": [
+      {
+        "name": "api-gateway",
+        "image": "gateway:v4.2.0",
+        "restart_count": 12,
+        "ready": false,
+        "last_exit_code": 1,
+        "last_termination_reason": "Error"
+      }
+    ],
+    "log_lines": [
+      "WARN: Liveness probe failed: HTTP probe failed with statuscode: 503",
+      "WARN: Liveness probe failed: HTTP probe failed with statuscode: 503",
+      "WARN: Liveness probe failed: HTTP probe failed with statuscode: 503",
+      "ERROR: Container killed due to liveness probe failure"
+    ],
+    "resource_limits": {
+      "cpu_request": "200m",
+      "cpu_limit": "1000m",
+      "memory_request": "256Mi",
+      "memory_limit": "512Mi"
+    },
+    "liveness_probe": {
+      "httpGet": {"path": "/healthz", "port": 8080},
+      "initialDelaySeconds": 5,
+      "periodSeconds": 10,
+      "failureThreshold": 3
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["liveness", "probe", "failing", "503"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Liveness probe too aggressive or app startup slow — initialDelaySeconds too low"
+  }
+}

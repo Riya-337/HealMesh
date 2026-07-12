@@ -1,0 +1,35 @@
+{
+  "incident": {
+    "pod_name": "auth-service-5c8d9f-mn3rt",
+    "namespace": "production",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-01T11:00:00Z",
+    "container_statuses": [
+      {
+        "name": "auth-service",
+        "image": "auth:v1.0.0",
+        "restart_count": 25,
+        "ready": false,
+        "last_exit_code": 2,
+        "last_termination_reason": "Error"
+      }
+    ],
+    "log_lines": [
+      "Error: missing required environment variable JWT_SECRET",
+      "FATAL: Cannot start server without JWT_SECRET configured",
+      "process exited with code 2"
+    ],
+    "resource_limits": {
+      "cpu_request": "50m",
+      "cpu_limit": "200m",
+      "memory_request": "64Mi",
+      "memory_limit": "128Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["environment", "variable", "missing", "JWT_SECRET"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Missing env var — needs manual config fix via PATCH or Secret update"
+  }
+}

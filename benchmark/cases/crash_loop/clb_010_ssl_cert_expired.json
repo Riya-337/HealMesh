@@ -1,0 +1,36 @@
+{
+  "incident": {
+    "pod_name": "notification-svc-7ec4d1-jb8nq",
+    "namespace": "services",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-07T09:50:00Z",
+    "container_statuses": [
+      {
+        "name": "notification-svc",
+        "image": "notification-svc:v1.9.2",
+        "restart_count": 14,
+        "ready": false,
+        "last_exit_code": 1,
+        "last_termination_reason": "Error"
+      }
+    ],
+    "log_lines": [
+      "INFO: Establishing TLS connection to api.notifications.example.com:443",
+      "ERROR: tls: failed to verify certificate: x509: certificate has expired or is not yet valid: current time 2026-07-07T09:50:00Z is after 2026-06-30T23:59:59Z",
+      "FATAL: Cannot connect to upstream API — SSL/TLS handshake failed",
+      "exit status 1"
+    ],
+    "resource_limits": {
+      "cpu_request": "100m",
+      "cpu_limit": "500m",
+      "memory_request": "128Mi",
+      "memory_limit": "256Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["x509", "certificate", "expired", "TLS"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "External API SSL certificate has expired — the certificate must be renewed by the certificate owner; not fixable by executor"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "incident": {
+    "pod_name": "java-backend-5e7c3b-lx8kp",
+    "namespace": "production",
+    "failure_type": "OOMKilled",
+    "detected_at": "2026-07-06T13:22:00Z",
+    "container_statuses": [
+      {
+        "name": "java-backend",
+        "image": "java-backend:v4.2.1",
+        "restart_count": 5,
+        "ready": false,
+        "last_exit_code": 137,
+        "last_termination_reason": "OOMKilled"
+      }
+    ],
+    "log_lines": [
+      "OpenJDK 17 starting with -Xmx4g -Xms1g",
+      "GC overhead limit exceeded — heap near capacity",
+      "java.lang.OutOfMemoryError: Java heap space",
+      "Exception in thread \"main\" java.lang.OutOfMemoryError: Java heap space",
+      "Killed"
+    ],
+    "resource_limits": {
+      "cpu_request": "500m",
+      "cpu_limit": "2000m",
+      "memory_request": "1Gi",
+      "memory_limit": "2Gi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["JVM", "heap", "-Xmx4g", "OutOfMemoryError", "2Gi"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "JVM -Xmx4g exceeds container memory limit of 2Gi — either reduce heap size flag or raise memory limit"
+  }
+}

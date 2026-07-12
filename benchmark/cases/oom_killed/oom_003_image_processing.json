@@ -1,0 +1,36 @@
+{
+  "incident": {
+    "pod_name": "image-resizer-7c2d4a-nb8qr",
+    "namespace": "media",
+    "failure_type": "OOMKilled",
+    "detected_at": "2026-07-02T11:00:00Z",
+    "container_statuses": [
+      {
+        "name": "image-resizer",
+        "image": "resizer:v2.1.0",
+        "restart_count": 4,
+        "ready": false,
+        "last_exit_code": 137,
+        "last_termination_reason": "OOMKilled"
+      }
+    ],
+    "log_lines": [
+      "INFO: Resizing image: 8000x6000px RAW file",
+      "INFO: Allocating buffer for image processing",
+      "INFO: Applying 12 filter pipeline",
+      "Killed"
+    ],
+    "resource_limits": {
+      "cpu_request": "500m",
+      "cpu_limit": "2000m",
+      "memory_request": "256Mi",
+      "memory_limit": "512Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["memory", "image", "processing", "large", "buffer"],
+    "confidence_min": "medium",
+    "action_type": "NONE",
+    "notes": "Large RAW image processing exceeds 512Mi limit — needs higher limit or streaming approach"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "incident": {
+    "pod_name": "session-service-1dc8b4-fk7qm",
+    "namespace": "production",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-07T07:20:00Z",
+    "container_statuses": [
+      {
+        "name": "session-service",
+        "image": "session-service:v2.1.4",
+        "restart_count": 16,
+        "ready": false,
+        "last_exit_code": 1,
+        "last_termination_reason": "Error"
+      }
+    ],
+    "log_lines": [
+      "INFO: Connecting to Redis at redis-master:6379",
+      "ERROR: dial tcp 10.96.5.42:6379: connect: connection refused",
+      "FATAL: Redis is unavailable — cannot establish session store connection",
+      "exit status 1"
+    ],
+    "resource_limits": {
+      "cpu_request": "100m",
+      "cpu_limit": "500m",
+      "memory_request": "128Mi",
+      "memory_limit": "256Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["Redis", "connection refused", "6379", "session store"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Redis dependency is unreachable on port 6379 — Redis pod may be down or service DNS misconfigured; not fixable by executor"
+  }
+}

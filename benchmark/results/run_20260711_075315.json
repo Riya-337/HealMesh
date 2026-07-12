@@ -1,0 +1,1242 @@
+{
+  "run_id": "20260711_075315",
+  "timestamp": "2026-07-11T07:53:15.175651+00:00",
+  "healmesh_core_url": "http://127.0.0.1:8000",
+  "total_cases": 32,
+  "passed": 13,
+  "failed": 19,
+  "accuracy": 0.4062,
+  "accuracy_pct": "40.6%",
+  "phase_gate_threshold": "80%",
+  "phase_gate_passed": false,
+  "breakdown": {
+    "keyword_match_rate": "13/32",
+    "action_match_rate": "27/32",
+    "confidence_ok_rate": "32/32"
+  },
+  "results": [
+    {
+      "case_id": "clb_001_db_connection_refused",
+      "case_file": "crash_loop/clb_001_db_connection_refused.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Database connection refused",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "database",
+          "connection",
+          "refused"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "6725a0f9-92e2-41ce-af58-d371062f666b",
+        "incident_id": "9ef56386-aaf6-4d9e-a667-c3d031826c0a",
+        "created_at": "2026-07-11T07:43:35.033287",
+        "root_cause": "Database connection refused",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs payment-api-7d9f8b-xk2pq -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 586,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_002_missing_env_var",
+      "case_file": "crash_loop/clb_002_missing_env_var.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Missing environment variable JWT_SECRET",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "environment",
+          "variable",
+          "missing",
+          "JWT_SECRET"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "001947f1-3095-4447-ae08-4d1c7dd20a51",
+        "incident_id": "377db311-e5ae-4086-9e37-bf34643511e7",
+        "created_at": "2026-07-11T07:43:51.371961",
+        "root_cause": "Missing environment variable JWT_SECRET",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl set env deployment/auth-service -n production JWT_SECRET=<secret_value>",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 707,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_003_oom_causing_crash_loop",
+      "case_file": "crash_loop/clb_003_oom_causing_crash_loop.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "OOMKilled due to memory leak",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "OOM",
+          "limit",
+          "killed"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "215b8fe3-209f-4d0b-8c9d-857d3a3607eb",
+        "incident_id": "5d92c86c-173e-47e8-bd1c-c9cdfc0698a5",
+        "created_at": "2026-07-11T07:44:07.328582",
+        "root_cause": "OOMKilled due to memory leak",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs worker-6bf7c9-pq8wx -n staging --previous",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 457,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_004_liveness_probe_killing_pod",
+      "case_file": "crash_loop/clb_004_liveness_probe_killing_pod.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Liveness probe failed with 503 status code",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "liveness",
+          "probe",
+          "failing",
+          "503"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "4c858fb5-cf36-40bb-83f8-38ec43b4ebe5",
+        "incident_id": "d8aaa96b-b81d-476c-ae2a-b9d0fef4912d",
+        "created_at": "2026-07-11T07:44:23.540885",
+        "root_cause": "Liveness probe failed with 503 status code",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs api-gateway-9bc4d2-zr6ys -n production --container api-gateway",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 678,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_005_file_permission_error",
+      "case_file": "crash_loop/clb_005_file_permission_error.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Permission denied: '/models/bert-large-uncased' file",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "permission",
+          "denied",
+          "model",
+          "file"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "13efbf98-812d-4f82-9003-d53416ef7d1c",
+        "incident_id": "1621e47c-3e47-4fbf-91a2-19b988818858",
+        "created_at": "2026-07-11T07:44:40.075979",
+        "root_cause": "Permission denied: '/models/bert-large-uncased' file",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl exec -it ml-inference-8ad3f1-kw9vx -n ml -- chmod 755 /models/bert-large-uncased",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 725,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_006_config_map_missing",
+      "case_file": "crash_loop/clb_006_config_map_missing.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "ConfigMap 'app-config' missing 'APP_CONFIG_FILE' configuration",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "ConfigMap",
+          "APP_CONFIG_FILE",
+          "missing",
+          "configuration"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "a7979192-baca-47b4-86da-f7c5ac997e09",
+        "incident_id": "99c46b63-273d-4e92-8bab-39d591db34de",
+        "created_at": "2026-07-11T07:45:01.170307",
+        "root_cause": "ConfigMap 'app-config' missing 'APP_CONFIG_FILE' configuration",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe configmap app-config -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 5508,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_007_port_already_in_use",
+      "case_file": "crash_loop/clb_007_port_already_in_use.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "EADDRINUSE, port 8080 already in use",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "EADDRINUSE",
+          "port",
+          "8080",
+          "already in use"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "00032439-a416-4376-b386-7cad09670289",
+        "incident_id": "47686286-8afe-49dd-8686-7a8e802ebd9d",
+        "created_at": "2026-07-11T07:45:17.483323",
+        "root_cause": "EADDRINUSE, port 8080 already in use",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl exec -it api-gateway-6b4c9a-pj7xt -- /bin/bash -c 'netstat -tlnp | grep 8080' -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 856,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_008_bad_command_entrypoint",
+      "case_file": "crash_loop/clb_008_bad_command_entrypoint.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Entrypoint /app/start.sh not found, exit code 127.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "entrypoint",
+          "/app/start.sh",
+          "not found",
+          "127"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "14b667f7-542c-4a56-82cf-97dec7210a24",
+        "incident_id": "e1dc62f4-a008-4eb4-af7d-a5f6c1165c8d",
+        "created_at": "2026-07-11T07:45:38.989335",
+        "root_cause": "Entrypoint /app/start.sh not found, exit code 127.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl exec -it worker-service-2cf5e1-hq9nz --namespace=staging -- /bin/bash -c 'ls /app/'",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 5941,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_009_redis_connection_refused",
+      "case_file": "crash_loop/clb_009_redis_connection_refused.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Redis connection refused at 6379",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "Redis",
+          "connection refused",
+          "6379",
+          "session store"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "22d13d1d-9096-48ec-9409-349825f89a27",
+        "incident_id": "dc9a36e3-a150-42fb-8afe-7cee4e561fa9",
+        "created_at": "2026-07-11T07:45:55.234812",
+        "root_cause": "Redis connection refused at 6379",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -f session-service-1dc8b4-fk7qm -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 733,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_010_ssl_cert_expired",
+      "case_file": "crash_loop/clb_010_ssl_cert_expired.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "TLS certificate expired",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "x509",
+          "certificate",
+          "expired",
+          "TLS"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "58dc9109-4b46-4358-a491-6ad1e6669742",
+        "incident_id": "14abe2c5-359a-43e4-9a5c-e6211215b379",
+        "created_at": "2026-07-11T07:46:11.479011",
+        "root_cause": "TLS certificate expired",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs -f notification-svc-7ec4d1-jb8nq -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 586,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_001_readiness_probe_failing",
+      "case_file": "failed_rollout/fro_001_readiness_probe_failing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Readiness probe failed with HTTP statuscode: 500",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "readiness",
+          "probe",
+          "failing",
+          "500",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "36329d68-f369-4c55-95d5-6a9ec7f729ce",
+        "incident_id": "bfbc0a2b-a405-493e-93a1-fe9c67490d2f",
+        "created_at": "2026-07-11T07:46:27.834904",
+        "root_cause": "Readiness probe failed with HTTP statuscode: 500",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl rollout restart deployment checkout-service -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "Action type 'RemediationActionType.REDEPLOY' requires params dict"
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 705,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_002_bad_image_tag",
+      "case_file": "failed_rollout/fro_002_bad_image_tag.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Image not found, failed to pull orders:v3.2.0-bad-image",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "pull",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "a25fdc63-4122-451d-8124-03df76c5197e",
+        "incident_id": "d12b5826-03e5-464d-94af-d269e6890b4a",
+        "created_at": "2026-07-11T07:46:44.115838",
+        "root_cause": "Image not found, failed to pull orders:v3.2.0-bad-image",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl rollout undo deployment order-service -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "Action type 'RemediationActionType.REDEPLOY' requires params dict"
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 674,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_003_insufficient_cpu",
+      "case_file": "failed_rollout/fro_003_insufficient_cpu.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Insufficient cpu, nodes have insufficient resources",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "insufficient",
+          "cpu",
+          "nodes",
+          "resources",
+          "pending"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "09f978db-ab11-41bc-9a8f-38703da347cf",
+        "incident_id": "49fcf867-a09a-4622-9447-fb5c7eaa4241",
+        "created_at": "2026-07-11T07:47:00.396758",
+        "root_cause": "Insufficient cpu, nodes have insufficient resources",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl scale deployment inventory-service --replicas=5 -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "Action type 'RemediationActionType.SCALE' requires params dict"
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 628,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_004_insufficient_memory",
+      "case_file": "failed_rollout/fro_004_insufficient_memory.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Insufficient memory on nodes",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "Insufficient memory",
+          "nodes",
+          "8Gi",
+          "scheduling"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "a1ec25bc-0c3f-4c8f-a0a0-2bb3bdd38d7c",
+        "incident_id": "ae93afaa-b3b3-4c79-a315-f3b26c3eee55",
+        "created_at": "2026-07-11T07:47:16.677207",
+        "root_cause": "Insufficient memory on nodes",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl scale deployment analytics-worker --replicas=1 -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "Action type 'RemediationActionType.SCALE' requires params dict"
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 654,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_005_config_validation_error",
+      "case_file": "failed_rollout/fro_005_config_validation_error.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Config YAML parse error, validation failed",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "config",
+          "YAML",
+          "parse error",
+          "validation",
+          "readiness"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "052eba23-1b55-4c71-9078-fa39e270abce",
+        "incident_id": "58ac961e-9832-4bd5-acf7-fd4f91f5f30b",
+        "created_at": "2026-07-11T07:47:33.266796",
+        "root_cause": "Config YAML parse error, validation failed",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl rollout restart deployment order-service -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "Action type 'RemediationActionType.REDEPLOY' requires params dict"
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 957,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_006_pending_pvc",
+      "case_file": "failed_rollout/fro_006_pending_pvc.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "PersistentVolumeClaim 'app-data-pvc' not bound, no matching PersistentVolume",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "PersistentVolumeClaim",
+          "PVC",
+          "not bound",
+          "Pending"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "085d8aa7-93e3-4e84-8285-62bb160f58cc",
+        "incident_id": "6a9d5af6-9965-4d93-b930-695e5541252f",
+        "created_at": "2026-07-11T07:47:49.857116",
+        "root_cause": "PersistentVolumeClaim 'app-data-pvc' not bound, no matching PersistentVolume",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pvc app-data-pvc -n staging",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 797,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_001_tag_not_found",
+      "case_file": "image_pull/ipb_001_tag_not_found.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Image not found: myregistry.io/frontend:v9.9.9",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "tag",
+          "v9.9.9"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "75aa5f92-0408-4493-b15f-05c0978ddf59",
+        "incident_id": "d1f2f124-37e6-4699-a19c-ee217c795328",
+        "created_at": "2026-07-11T07:48:06.136570",
+        "root_cause": "Image not found: myregistry.io/frontend:v9.9.9",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod frontend-deploy-5d8f9c-rv2kn -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 653,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_002_registry_auth_failure",
+      "case_file": "image_pull/ipb_002_registry_auth_failure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Registry auth failed with 401 Unauthorized",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "401",
+          "unauthorized",
+          "registry",
+          "credentials",
+          "imagePullSecret"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "0fc4fc9b-ca82-41e7-bb0c-72c49dc48106",
+        "incident_id": "0de91e93-0ed5-4ab5-8b5b-4c6b1d6c4486",
+        "created_at": "2026-07-11T07:48:22.419966",
+        "root_cause": "Registry auth failed with 401 Unauthorized",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod backend-api-3ac7e2-qx5nt -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 660,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_003_gcr_iam_permission",
+      "case_file": "image_pull/ipb_003_gcr_iam_permission.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "403 Forbidden: denied access to image",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "403",
+          "forbidden",
+          "service account",
+          "permission",
+          "GCR"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "ad6a2ad3-884e-4416-bd7d-f0dd9a8fb652",
+        "incident_id": "a28d6844-092f-4fe3-bdf8-4c5dd1bfd4f7",
+        "created_at": "2026-07-11T07:48:38.537591",
+        "root_cause": "403 Forbidden: denied access to image",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod ml-trainer-2bf4c9-hk7vz -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 493,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_004_typo_in_image_name",
+      "case_file": "image_pull/ipb_004_typo_in_image_name.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Image 'ngnix:1.25.3' not found, pull access denied",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "ngnix",
+          "typo",
+          "image",
+          "not found"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "94a74a91-9d58-4dd6-8bfe-f50f4e826019",
+        "incident_id": "94b62d02-8eab-4745-bfb5-85d585a45460",
+        "created_at": "2026-07-11T07:48:55.288867",
+        "root_cause": "Image 'ngnix:1.25.3' not found, pull access denied",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod web-frontend-4af1c9-rz3ew -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 1283,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_005_docker_hub_rate_limit",
+      "case_file": "image_pull/ipb_005_docker_hub_rate_limit.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Docker Hub rate limit exceeded, 429, toomanyrequests",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "rate limit",
+          "429",
+          "Docker Hub",
+          "toomanyrequests"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "bafe2c82-d209-48c5-8493-919712b780a9",
+        "incident_id": "e05d1897-1ad7-4679-8c2c-dc07125126b7",
+        "created_at": "2026-07-11T07:49:14.334671",
+        "root_cause": "Docker Hub rate limit exceeded, 429, toomanyrequests",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod batch-runner-7bc3d2-kn4ql -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 2810,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_001_large_dataset",
+      "case_file": "oom_killed/oom_001_large_dataset.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Memory leak, OOMKilled, 512Mi limit",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "limit",
+          "OOM",
+          "512Mi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "bdb01e44-abd2-45d6-b5f4-15eaf70aee6b",
+        "incident_id": "309d9959-4a7c-4974-bd87-ca0e589b3e6d",
+        "created_at": "2026-07-11T07:49:30.616215",
+        "root_cause": "Memory leak, OOMKilled, 512Mi limit",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod data-processor-3ef6b8-jt4mn -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 654,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_002_memory_leak_cache",
+      "case_file": "oom_killed/oom_002_memory_leak_cache.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Memory leak, unbounded cache",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "cache",
+          "memory",
+          "leak",
+          "eviction",
+          "unbounded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "0abb89a5-0fed-4009-bc46-72877008402b",
+        "incident_id": "d6d47467-1144-42bc-8a7c-c3d3108db546",
+        "created_at": "2026-07-11T07:49:47.158610",
+        "root_cause": "Memory leak, unbounded cache",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod cache-service-4bc9e1-wr2kp -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 916,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_003_image_processing",
+      "case_file": "oom_killed/oom_003_image_processing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Memory leak during image processing",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "image",
+          "processing",
+          "large",
+          "buffer"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "84ea0c84-69a9-496a-8d60-592a97dbae19",
+        "incident_id": "910b250a-2cea-41c7-9cf2-258f15fa95d0",
+        "created_at": "2026-07-11T07:50:03.487362",
+        "root_cause": "Memory leak during image processing",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod image-resizer-7c2d4a-nb8qr -n media",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 655,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_004_jvm_heap",
+      "case_file": "oom_killed/oom_004_jvm_heap.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "OOMKilled, OutOfMemoryError, heap near capacity",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "JVM",
+          "heap",
+          "-Xmx4g",
+          "OutOfMemoryError",
+          "2Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "7bc6a156-8cef-4db1-b2bb-a3177623a3ae",
+        "incident_id": "6a2202b5-d1cc-4875-ae65-c110620dcb9a",
+        "created_at": "2026-07-11T07:50:19.769703",
+        "root_cause": "OOMKilled, OutOfMemoryError, heap near capacity",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod java-backend-5e7c3b-lx8kp -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 764,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_005_numpy_array_explosion",
+      "case_file": "oom_killed/oom_005_numpy_array_explosion.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "OOMKilled, memory limit 8Gi, numpy array allocation failed",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "numpy",
+          "MemoryError",
+          "array",
+          "OOMKilled"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "455483ff-1448-4c45-abbd-2731c44dae40",
+        "incident_id": "519f0d09-dc91-4e8e-9765-2c1caddd0a23",
+        "created_at": "2026-07-11T07:50:36.054233",
+        "root_cause": "OOMKilled, memory limit 8Gi, numpy array allocation failed",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod ml-trainer-9d2a4f-bv6ys -n data",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 661,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_006_node_pressure",
+      "case_file": "oom_killed/oom_006_node_pressure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "Node memory pressure, OOMKilled",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "node memory pressure",
+          "eviction",
+          "threshold",
+          "memory"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "9c37b188-46b0-4af5-b3bb-82f7218da97a",
+        "incident_id": "2ba74af3-108d-4bcd-90ae-bd462869396a",
+        "created_at": "2026-07-11T07:50:52.136619",
+        "root_cause": "Node memory pressure, OOMKilled",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe node worker-03 --namespace=monitoring",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 458,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_001_pod_count_limit",
+      "case_file": "quota_exceeded/qex_001_pod_count_limit.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Quota exceeded: pods limit 10",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "pods",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "e9984430-52af-420e-b023-c22d3b1bc37e",
+        "incident_id": "0e02b1fb-f813-4793-9a4f-57252d40e6da",
+        "created_at": "2026-07-11T07:51:08.497978",
+        "root_cause": "Quota exceeded: pods limit 10",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl delete pod report-gen-6de4c2-ab8wp -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 592,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_002_cpu_quota",
+      "case_file": "quota_exceeded/qex_002_cpu_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Quota exceeded: requests.cpu limit 32",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "cpu",
+          "requests",
+          "exceeded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "310b07d6-89a8-4d4a-9ec3-9790b282f130",
+        "incident_id": "8632af2c-3b1b-4cce-adf7-3a9cc6dd207e",
+        "created_at": "2026-07-11T07:51:24.500210",
+        "root_cause": "Quota exceeded: requests.cpu limit 32",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota analytics-quota -n analytics",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 514,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_003_memory_quota",
+      "case_file": "quota_exceeded/qex_003_memory_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Quota exceeded: requests.memory limit 32Gi",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "memory",
+          "exceeded",
+          "Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "a1475d5e-b12b-4de1-b57a-7e278fb4a7b1",
+        "incident_id": "b1b102c9-1c45-42ce-8c9a-9e81743da0c0",
+        "created_at": "2026-07-11T07:51:40.506152",
+        "root_cause": "Quota exceeded: requests.memory limit 32Gi",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota ml-quota -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 566,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_004_pvc_quota",
+      "case_file": "quota_exceeded/qex_004_pvc_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Quota exceeded: persistentvolumeclaims limit of 5 reached",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "persistentvolumeclaims",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "a9636014-9d4f-40b9-b1e2-da33e7e49e15",
+        "incident_id": "bad492db-6059-47c3-b2eb-008363e2627d",
+        "created_at": "2026-07-11T07:51:56.492500",
+        "root_cause": "Quota exceeded: persistentvolumeclaims limit of 5 reached",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl delete pvc media-data-pvc-6 -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 496,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_005_services_quota",
+      "case_file": "quota_exceeded/qex_005_services_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "Quota exceeded: services.loadbalancers limit 2",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "loadbalancers",
+          "exceeded",
+          "services"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "d1597f47-a555-4f22-99fa-32dd17c69680",
+        "incident_id": "ca2dbba6-a25a-43a1-9040-92a0a01d0872",
+        "created_at": "2026-07-11T07:52:12.351544",
+        "root_cause": "Quota exceeded: services.loadbalancers limit 2",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota services-quota -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.3-70b-versatile",
+        "latency_ms": 463,
+        "action_type": "NONE"
+      }
+    }
+  ]
+}

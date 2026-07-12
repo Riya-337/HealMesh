@@ -1,0 +1,20 @@
+{
+  "incident": {
+    "pod_name": "model-serving-1ca8b4-dx3yp",
+    "namespace": "ml",
+    "failure_type": "ResourceQuotaExceeded",
+    "detected_at": "2026-07-05T11:00:00Z",
+    "log_lines": [
+      "Error from server (Forbidden): exceeded quota: ml-quota, requested: requests.memory=4Gi, used: requests.memory=28Gi, limited: requests.memory=32Gi"
+    ],
+    "quota_resource": "requests.memory",
+    "quota_limit": "32Gi",
+    "quota_used": "28Gi"
+  },
+  "expected": {
+    "root_cause_keywords": ["quota", "memory", "exceeded", "Gi"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Memory request quota exhausted at 28/32Gi — need to free memory or increase namespace quota"
+  }
+}

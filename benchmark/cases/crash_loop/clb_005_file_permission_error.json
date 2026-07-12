@@ -1,0 +1,35 @@
+{
+  "incident": {
+    "pod_name": "ml-inference-8ad3f1-kw9vx",
+    "namespace": "ml",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-01T14:00:00Z",
+    "container_statuses": [
+      {
+        "name": "ml-inference",
+        "image": "ml-model:v1.2.0",
+        "restart_count": 6,
+        "ready": false,
+        "last_exit_code": 1,
+        "last_termination_reason": "Error"
+      }
+    ],
+    "log_lines": [
+      "Loading model from /models/bert-large-uncased...",
+      "PermissionError: [Errno 13] Permission denied: '/models/bert-large-uncased'",
+      "FATAL: Cannot read model file, exiting"
+    ],
+    "resource_limits": {
+      "cpu_request": "500m",
+      "cpu_limit": "2000m",
+      "memory_request": "2Gi",
+      "memory_limit": "4Gi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["permission", "denied", "model", "file"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "File permission issue on mounted volume — needs PodSecurityContext or volume fix"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "incident": {
+    "pod_name": "order-service (deployment)",
+    "namespace": "production",
+    "failure_type": "FailedRollout",
+    "detected_at": "2026-07-04T10:00:00Z",
+    "container_statuses": [
+      {
+        "name": "order-service",
+        "image": "orders:v3.2.0-bad-image",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "Failed to pull image \"orders:v3.2.0-bad-image\": rpc error: code = NotFound: not found"
+    ],
+    "deployment_name": "order-service",
+    "desired_replicas": 2,
+    "ready_replicas": 0,
+    "image": "orders:v3.2.0-bad-image"
+  },
+  "expected": {
+    "root_cause_keywords": ["image", "not found", "pull", "rollout"],
+    "confidence_min": "high",
+    "action_type": "REDEPLOY",
+    "notes": "New deployment image tag does not exist — rollback to last good version"
+  }
+}

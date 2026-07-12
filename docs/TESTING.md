@@ -1,81 +1,74 @@
 # HealMesh — Testing Strategy
 
 Status: Draft v1
-Authority: This document outlines the rigorous testing standards required for the HealMesh project, particularly emphasizing the separation of concerns and the strict security invariants defined in CONSTITUTION.md and AGENTS.md.
+Authority: This document is the canonical reference for how HealMesh components are tested. It operationalizes the invariants defined in CONSTITUTION.md.
 
 ---
 
-## 1. Overview
+## 1. Coverage Bars & Requirements
 
-HealMesh components are tested in isolation, followed by integration tests in a live Kubernetes cluster (e.g., kind or minikube). Tests are shipped alongside the code they test. Write capability must be accompanied by a test in the same PR.
+Code that cannot be tested cannot be trusted to operate on a production cluster. Coverage must be enforced strictly via CI.
 
----
-
-## 2. Unit Testing & Coverage Bars
-
-### 2.1 The Remediation Action Parser (CRITICAL)
-
-The `action_parser.py` module is the single most security-critical component in HealMesh (Constitution Article 2, Invariant 1). It enforces the closed enum and protects downstream execution from arbitrary LLM output.
-
-**Coverage Requirement:**
-- **100% branch coverage** is strictly required for `healmesh-core/parser/action_parser.py`.
-- Any change to the parser must be accompanied by a corresponding test in `tests/test_parser.py`.
-- Any coverage drop below 100% is considered a build failure.
-
-### 2.2 The Audit Logger
-
-The audit logger must maintain append-only semantics. Tests must use reflection to ensure no `update()` or `delete()` methods exist on audit-logging classes.
-
-### 2.3 The Watcher (Go)
-
-The Go watcher (`healmesh-k8s/watcher/`) must be tested to ensure it accurately detects the 5 supported failure types (`CrashLoopBackOff`, `OOMKilled`, `ImagePullBackOff`, `FailedRollout`, `ResourceQuotaExceeded`).
+- **Remediation Action Parser (`healmesh-core/parser/action_parser.py`)**: 100% Branch Coverage. (Critical invariant: enforces the closed enum).
+- **Executor (`healmesh-k8s/executor/`)**: 100% Branch Coverage. (Critical invariant: enforces the namespace denylist and approval gating).
+- **Audit Logger (`healmesh-core/audit/logger.py`)**: 100% Statement Coverage. Must verify append-only semantics via reflection (no `update`/`delete` methods).
+- **Schema Validator (`healmesh-core/schema/`)**: 90% Statement Coverage.
+- **Event Watcher (`healmesh-k8s/watcher/`)**: 80% Statement Coverage.
+- **Approval Workflow Engine (`healmesh-core/approval/`)**: 90% Branch Coverage.
+- **HealPolicy CRD**: E2E validation tests required for all admission controller webhooks (Phase 3+).
 
 ---
 
-## 3. Phase 1.5: End-to-End Timing (FR-3)
+## 2. Unit Testing Methodology
 
-A core non-functional requirement (FR-3) is that the time elapsed from failure detection in the cluster to the delivery of the Slack diagnosis notification is minimal.
-
-- **Target:** ≤ 30s p95 latency.
-- **Measurement:** Injected failure -> detection -> LLM diagnosis -> Slack delivery.
-- Must be measured via a real end-to-end integration test against a live cluster.
-
----
-
-## 4. Phase 1.5: Benchmark & Accuracy Gate
-
-The Phase 1.5 accuracy gate evaluates the AI diagnosis quality.
-
-- **Target:** ≥ 80% accuracy per failure type before Phase 2 (Automated Remediation) can begin.
-- **Dataset:** 30–50 synthetic cases across the 5 failure types.
-- **Rules:** The benchmark script (`run_benchmark.py`) must handle API quota limits gracefully (saving state) and report true accuracy without conflating API errors with diagnosis failures.
+Unit tests are isolated. They mock external dependencies (Kubernetes API, LLM Provider, Slack API, PostgreSQL).
+- Python (healmesh-core): `pytest`, `pytest-cov`, `pytest-asyncio`.
+- Go (healmesh-k8s): `go test`, table-driven tests (`assert` / `require`).
+Write capability (Executor) must be accompanied by a test in the exact same PR.
 
 ---
 
-## 5. Kubernetes Integration Tests
+## 3. Integration Testing Methodology
 
-### 5.1 RBAC Negative Testing
-
-The `healmesh-watcher` component is strictly read-only.
-- **Requirement:** Tests must verify that any attempt by the watcher service account to perform write verbs (`create`, `update`, `patch`, `delete`) on Kubernetes resources is denied by the cluster's RBAC enforcement.
-
-### 5.2 Failure Injection
-
-Integration tests will use `infra/scripts/inject_failure.sh` to inject the 5 failure types against the cluster and confirm the end-to-end flow.
+Integration tests run against a local `kind` or `minikube` cluster, connecting the Python core and Go components.
+- **Database**: Ephemeral PostgreSQL containers.
+- **Event Flow**: Tests must assert that a generated Kubernetes event reaches the core and generates a parsed `Diagnosis` object.
+- **Timing (FR-3)**: End-to-End latency from failure injection to Slack notification delivery MUST be ≤ 30s p95 across all failure types.
 
 ---
 
-## 6. Phase 2 (Future): The Executor
+## 4. Security Testing Methodology
 
-*(To be authored in Phase 2)*
-The Executor (`healmesh-k8s/executor/`) is the only component with write privileges. It must enforce the hardcoded namespace denylist (`kube-system`, `kube-public`, `healmesh`) before any action.
+Security testing ensures the structural invariants are physically enforced.
+
+- **RBAC Negative Tests**: Integration tests MUST verify that the `healmesh-watcher` ServiceAccount is denied write verbs (`create`, `update`, `patch`, `delete`) by the cluster.
+- **Denylist Evasion Tests**: Tests must attempt to trick the Executor into mutating `kube-system`, `kube-public`, or `healmesh` namespaces and verify strict rejection.
+- **Parser Fuzzing**: The `action_parser.py` must be fuzzed with malformed LLM responses to ensure it securely defaults to `NONE`.
 
 ---
 
-## 7. Slack Integration & Security
+## 5. Benchmark Methodology (Phase 1.5)
 
-When adding inbound Slack webhooks (e.g., for Phase 2 approval interactions or interactive buttons):
+Before Phase 2 (Automated Remediation) can begin, the AI diagnosis quality must be proven.
 
-- **HMAC Signature Verification Requirement:** HMAC signature verification MUST be active on the webhook handler.
-- **Parsing Order:** The handler must reject invalid signatures (HTTP 401) **before** any payload parsing, JSON decoding, or Pydantic validation occurs. This prevents arbitrary data from entering the application context.
-- **Secrets:** `SLACK_SIGNING_SECRET` and `SLACK_BOT_TOKEN` must be strictly loaded from environment variables and must never be logged.
+- **Gate**: ≥ 80% accuracy per failure type.
+- **Dataset**: 30–50 synthetic cases across the 5 canonical failure types (CrashLoopBackOff, OOMKilled, ImagePullBackOff, FailedRollout, ResourceQuotaExceeded).
+- **Tooling**: `benchmark/run_benchmark.py` must handle API quota limits gracefully (checkpointing progress) and report true accuracy (conflating an API error with a wrong diagnosis is prohibited).
+
+---
+
+## 6. Chaos & Failure-Injection Testing
+
+HealMesh must be resilient to infrastructure turbulence.
+- **Scripted Injections**: `infra/scripts/inject_failure.sh` is used to deterministically trigger the 5 canonical failure types.
+- **Resilience**: The watcher must auto-reconnect if the Kubernetes API server restarts. The core must retry LLM calls on 429s with exponential backoff (up to 3 retries) before emitting a generic diagnosis failure.
+
+---
+
+## 7. CI/CD Merge Gates & Integrations
+
+All PRs must pass the automated merge gates.
+
+- **Slack HMAC Verification**: Any inbound webhook (e.g., `POST /slack/actions`) MUST enforce HMAC-SHA256 signature verification *before* any payload parsing occurs. Unsigned or expired (old timestamp) requests must be rejected immediately (HTTP 401).
+- **Secrets Management**: `SLACK_BOT_TOKEN`, `SLACK_SIGNING_SECRET`, and `GEMINI_API_KEY` must never be logged. They must be loaded exclusively via environment variables. (Vault integration deferred to Phase 2).
+- **Build**: No PR may merge if it reduces coverage below the bars defined in Section 1.

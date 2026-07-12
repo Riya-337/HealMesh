@@ -1,0 +1,37 @@
+{
+  "incident": {
+    "pod_name": "cache-service-4bc9e1-wr2kp",
+    "namespace": "production",
+    "failure_type": "OOMKilled",
+    "detected_at": "2026-07-02T10:00:00Z",
+    "container_statuses": [
+      {
+        "name": "cache-service",
+        "image": "cache:v1.5.2",
+        "restart_count": 7,
+        "ready": false,
+        "last_exit_code": 137,
+        "last_termination_reason": "OOMKilled"
+      }
+    ],
+    "log_lines": [
+      "WARN: Cache size growing: 180MB",
+      "WARN: Cache size growing: 220MB",
+      "ERROR: Cache eviction policy not configured, unbounded growth",
+      "WARN: Cache size growing: 250MB",
+      "Killed"
+    ],
+    "resource_limits": {
+      "cpu_request": "100m",
+      "cpu_limit": "500m",
+      "memory_request": "128Mi",
+      "memory_limit": "256Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["cache", "memory", "leak", "eviction", "unbounded"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Memory leak / unbounded cache — needs eviction policy fix in app config"
+  }
+}

@@ -1,0 +1,1251 @@
+{
+  "run_id": "20260711_065159",
+  "timestamp": "2026-07-11T06:57:14.319805+00:00",
+  "healmesh_core_url": "http://127.0.0.1:8000",
+  "total_cases": 32,
+  "passed": 24,
+  "failed": 8,
+  "accuracy": 0.75,
+  "accuracy_pct": "75.0%",
+  "phase_gate_threshold": "80%",
+  "phase_gate_passed": false,
+  "breakdown": {
+    "keyword_match_rate": "24/32",
+    "action_match_rate": "30/32",
+    "confidence_ok_rate": "30/32"
+  },
+  "results": [
+    {
+      "case_id": "clb_001_db_connection_refused",
+      "case_file": "crash_loop/clb_001_db_connection_refused.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The payment-api pod is in CrashLoopBackOff due to a database connection refused error on port 5432, preventing the application from starting. This indicates an issue with the database service or network connectivity.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "database",
+          "connection",
+          "refused"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "9a456824-4b96-42ed-b0f4-50ce58083bed",
+        "incident_id": "699301f9-b8fc-40a1-9598-194e91b66cf0",
+        "created_at": "2026-07-11T06:52:06.054353",
+        "root_cause": "The payment-api pod is in CrashLoopBackOff due to a database connection refused error on port 5432, preventing the application from starting. This indicates an issue with the database service or network connectivity.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs payment-api-7d9f8b-xk2pq -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 6055,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_002_missing_env_var",
+      "case_file": "crash_loop/clb_002_missing_env_var.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The 'auth-service' pod is crashing because the required environment variable 'JWT_SECRET' is missing, preventing the application from starting up.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "environment",
+          "variable",
+          "missing",
+          "JWT_SECRET"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "1584bd91-3eb2-4649-babf-ea880f8be063",
+        "incident_id": "85bf76a5-c8f2-4c59-9a68-c210498e09f3",
+        "created_at": "2026-07-09T10:45:29.490562",
+        "root_cause": "The 'auth-service' pod is crashing because the required environment variable 'JWT_SECRET' is missing, preventing the application from starting up.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe deployment auth-service -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3227,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_003_oom_causing_crash_loop",
+      "case_file": "crash_loop/clb_003_oom_causing_crash_loop.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod is experiencing an OutOfMemory (OOM) error, leading to OOMKilled and CrashLoopBackOff. The container attempted to load a large number of records into memory, exceeding its 256Mi memory limit, resulting in the process being killed.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "OOM",
+          "limit",
+          "killed"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "e2dd084a-07ed-477b-be76-e1da1501ae79",
+        "incident_id": "19f90797-4a22-44f4-9d12-22b502bdcf4b",
+        "created_at": "2026-07-09T11:09:44.946831",
+        "root_cause": "The pod is experiencing an OutOfMemory (OOM) error, leading to OOMKilled and CrashLoopBackOff. The container attempted to load a large number of records into memory, exceeding its 256Mi memory limit, resulting in the process being killed.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod worker-6bf7c9-pq8wx -n staging",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3878,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_004_liveness_probe_killing_pod",
+      "case_file": "crash_loop/clb_004_liveness_probe_killing_pod.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The api-gateway container is repeatedly crashing due to its liveness probe failing with an HTTP statuscode: 503, causing Kubernetes to kill and restart the container.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "liveness",
+          "probe",
+          "failing",
+          "503"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "3f863c84-c0c3-41ad-ac14-fdea558f6d83",
+        "incident_id": "4f0328f3-8f5a-4ecc-9a41-d9e39373d168",
+        "created_at": "2026-07-09T11:10:03.290517",
+        "root_cause": "The api-gateway container is repeatedly crashing due to its liveness probe failing with an HTTP statuscode: 503, causing Kubernetes to kill and restart the container.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs api-gateway-9bc4d2-zr6ys -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 2963,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_005_file_permission_error",
+      "case_file": "crash_loop/clb_005_file_permission_error.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The container is crashing due to a file permission issue. The application is unable to load the model from '/models/bert-large-uncased' because of a 'Permission denied' error, indicating the model file or directory lacks the necessary read permissions.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "permission",
+          "denied",
+          "model",
+          "file"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "6247623c-92f1-431e-965a-acfaa7be2e0c",
+        "incident_id": "356c656d-6e94-4262-a453-bc740fc281a1",
+        "created_at": "2026-07-09T11:10:21.574651",
+        "root_cause": "The container is crashing due to a file permission issue. The application is unable to load the model from '/models/bert-large-uncased' because of a 'Permission denied' error, indicating the model file or directory lacks the necessary read permissions.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs ml-inference-8ad3f1-kw9vx -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 2842,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_006_config_map_missing",
+      "case_file": "crash_loop/clb_006_config_map_missing.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The application is crashing due to a missing required configuration key 'APP_CONFIG_FILE' in the 'app-config' ConfigMap, which is essential for the service to start.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "ConfigMap",
+          "APP_CONFIG_FILE",
+          "missing",
+          "configuration"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "889ae6cb-41eb-4b92-b9f8-007d0ab7fd31",
+        "incident_id": "3989fd4a-17c4-4688-b7e1-82526ce87c2b",
+        "created_at": "2026-07-09T10:46:49.989530",
+        "root_cause": "The application is crashing due to a missing required configuration key 'APP_CONFIG_FILE' in the 'app-config' ConfigMap, which is essential for the service to start.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl get configmap app-config -n production -o yaml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3739,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_007_port_already_in_use",
+      "case_file": "crash_loop/clb_007_port_already_in_use.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The api-gateway container is failing to start due to a port already in use error (EADDRINUSE) on port 8080, indicating a conflict where the application cannot bind to the required port.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "EADDRINUSE",
+          "port",
+          "8080",
+          "already in use"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "8d77bc00-63d0-425d-8cce-eacc569e9e33",
+        "incident_id": "1a035393-8471-49d4-bfbb-8e432aefbb6d",
+        "created_at": "2026-07-09T10:47:09.673556",
+        "root_cause": "The api-gateway container is failing to start due to a port already in use error (EADDRINUSE) on port 8080, indicating a conflict where the application cannot bind to the required port.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs api-gateway-6b4c9a-pj7xt -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 4307,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_008_bad_command_entrypoint",
+      "case_file": "crash_loop/clb_008_bad_command_entrypoint.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The container entrypoint script '/app/start.sh' was not found, leading to an exit code 127. This indicates a misconfiguration in the container image or the pod's command definition.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "entrypoint",
+          "/app/start.sh",
+          "not found",
+          "127"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "1ed99f6d-f263-4125-8b36-4a71a229375b",
+        "incident_id": "33d775b8-bd47-47d4-b90e-34dd81f4da6c",
+        "created_at": "2026-07-09T11:10:39.688336",
+        "root_cause": "The container entrypoint script '/app/start.sh' was not found, leading to an exit code 127. This indicates a misconfiguration in the container image or the pod's command definition.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod worker-service-2cf5e1-hq9nz -n staging",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 2692,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_009_redis_connection_refused",
+      "case_file": "crash_loop/clb_009_redis_connection_refused.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The session-service pod is failing to connect to Redis at redis-master:6379, resulting in a 'Redis connection refused' error. This prevents the session store from initializing, causing the container to exit with status 1.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "Redis",
+          "connection refused",
+          "6379",
+          "session store"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "8a96c19a-77fc-4d21-9470-3977b048e7a2",
+        "incident_id": "73844da5-ab7d-48be-8b19-bdd6b9c32397",
+        "created_at": "2026-07-11T06:52:24.681694",
+        "root_cause": "The session-service pod is failing to connect to Redis at redis-master:6379, resulting in a 'Redis connection refused' error. This prevents the session store from initializing, causing the container to exit with status 1.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl get pods -l app=redis-master -n production && kubectl logs session-service-1dc8b4-fk7qm -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 2778,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_010_ssl_cert_expired",
+      "case_file": "crash_loop/clb_010_ssl_cert_expired.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The notification-svc pod is experiencing a CrashLoopBackOff because it cannot establish a TLS connection to api.notifications.example.com:443. The connection is failing due to an expired x509 certificate on the upstream API, leading to an SSL/TLS handshake failure and container exit.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "x509",
+          "certificate",
+          "expired",
+          "TLS"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "288cad7b-e74a-4d42-9718-d85662eebf3a",
+        "incident_id": "a9400b06-00f8-4eb3-b943-17843b77b2d1",
+        "created_at": "2026-07-09T10:48:10.448260",
+        "root_cause": "The notification-svc pod is experiencing a CrashLoopBackOff because it cannot establish a TLS connection to api.notifications.example.com:443. The connection is failing due to an expired x509 certificate on the upstream API, leading to an SSL/TLS handshake failure and container exit.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl logs notification-svc-7ec4d1-jb8nq -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 4303,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_001_readiness_probe_failing",
+      "case_file": "failed_rollout/fro_001_readiness_probe_failing.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The checkout-service deployment is experiencing a FailedRollout because its readiness probe is consistently failing with an HTTP 500 status code, indicating an application-level issue preventing the pod from becoming ready.",
+        "action_returned": "REDEPLOY",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "readiness",
+          "probe",
+          "failing",
+          "500",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "8a8a09df-d2ef-4e7f-abbf-bec91cd65202",
+        "incident_id": "7eeb0434-b0a1-4e48-b607-41add5e021e5",
+        "created_at": "2026-07-09T10:48:28.414535",
+        "root_cause": "The checkout-service deployment is experiencing a FailedRollout because its readiness probe is consistently failing with an HTTP 500 status code, indicating an application-level issue preventing the pod from becoming ready.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl rollout restart deployment/checkout-service -n production",
+        "parsed_action": {
+          "action_type": "REDEPLOY",
+          "params": {
+            "deployment_name": "checkout-service",
+            "namespace": "production"
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 2530,
+        "action_type": "REDEPLOY"
+      }
+    },
+    {
+      "case_id": "fro_002_bad_image_tag",
+      "case_file": "failed_rollout/fro_002_bad_image_tag.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The deployment failed because the specified image orders:v3.2.0-bad-image was not found in the container registry, leading to an image pull failure.",
+        "action_returned": "REDEPLOY",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "pull",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "4e98c1c9-7cf5-4986-b218-97f3485ca023",
+        "incident_id": "c4bd48b4-7d67-49da-a286-f61f24529d83",
+        "created_at": "2026-07-11T06:52:48.645894",
+        "root_cause": "The deployment failed because the specified image orders:v3.2.0-bad-image was not found in the container registry, leading to an image pull failure.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl set image deployment/order-service order-service=orders:v3.2.1 -n production",
+        "parsed_action": {
+          "action_type": "REDEPLOY",
+          "params": {
+            "deployment_name": "order-service",
+            "namespace": "production"
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 8333,
+        "action_type": "REDEPLOY"
+      }
+    },
+    {
+      "case_id": "fro_003_insufficient_cpu",
+      "case_file": "failed_rollout/fro_003_insufficient_cpu.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "insufficient",
+          "cpu",
+          "nodes",
+          "resources",
+          "pending"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "b9cfa235-aabb-4570-bb5d-1ccf4d55a66e",
+        "incident_id": "c7f4c630-ebaa-4829-86b8-760894a65c20",
+        "created_at": "2026-07-11T06:53:15.930463",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 11656,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_004_insufficient_memory",
+      "case_file": "failed_rollout/fro_004_insufficient_memory.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "Insufficient memory",
+          "nodes",
+          "8Gi",
+          "scheduling"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "25eadc71-b322-4ab5-8095-b6e0a849f728",
+        "incident_id": "49e76daf-23d9-448c-a47b-f8d845947de0",
+        "created_at": "2026-07-11T06:53:43.413682",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 11793,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_005_config_validation_error",
+      "case_file": "failed_rollout/fro_005_config_validation_error.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The order-service deployment failed to roll out due to a configuration validation error. The service failed to parse its /etc/order-service/config.yaml file at line 42, indicating a YAML syntax issue, which prevented the application from starting and passing its readiness probe.",
+        "action_returned": "REDEPLOY",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "config",
+          "YAML",
+          "parse error",
+          "validation",
+          "readiness"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "caa930e0-ac99-4af1-a767-1cf18ef81190",
+        "incident_id": "64dd5e92-b6f2-42bd-ad81-e2d1e87eca3b",
+        "created_at": "2026-07-11T06:54:02.984892",
+        "root_cause": "The order-service deployment failed to roll out due to a configuration validation error. The service failed to parse its /etc/order-service/config.yaml file at line 42, indicating a YAML syntax issue, which prevented the application from starting and passing its readiness probe.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl get configmap order-service-config -n production -o yaml",
+        "parsed_action": {
+          "action_type": "REDEPLOY",
+          "params": {
+            "deployment_name": "order-service",
+            "namespace": "production"
+          },
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 4028,
+        "action_type": "REDEPLOY"
+      }
+    },
+    {
+      "case_id": "fro_006_pending_pvc",
+      "case_file": "failed_rollout/fro_006_pending_pvc.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The PersistentVolumeClaim (PVC) 'app-data-pvc' is not bound because no PersistentVolume is available matching the requested storage class and capacity, preventing the pod from mounting its volume.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "PersistentVolumeClaim",
+          "PVC",
+          "not bound",
+          "Pending"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "7366542e-8e88-4b14-b4c3-e4a107c834dd",
+        "incident_id": "5a76c03e-dc78-4348-b872-abf4423247a1",
+        "created_at": "2026-07-11T06:54:22.645819",
+        "root_cause": "The PersistentVolumeClaim (PVC) 'app-data-pvc' is not bound because no PersistentVolume is available matching the requested storage class and capacity, preventing the pod from mounting its volume.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pvc app-data-pvc -n staging",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 4029,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_001_tag_not_found",
+      "case_file": "image_pull/ipb_001_tag_not_found.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The image myregistry.io/frontend:v9.9.9 was not found in the registry, leading to an ImagePullBackOff error. This indicates a typo in the image tag or the image was never pushed.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "tag",
+          "v9.9.9"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "88d90454-f0be-4220-adfe-812ea430fbb9",
+        "incident_id": "f58f2eef-a371-48c5-a391-1ebe874bafdf",
+        "created_at": "2026-07-11T06:54:41.691576",
+        "root_cause": "The image myregistry.io/frontend:v9.9.9 was not found in the registry, leading to an ImagePullBackOff error. This indicates a typo in the image tag or the image was never pushed.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod frontend-deploy-5d8f9c-rv2kn -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3420,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_002_registry_auth_failure",
+      "case_file": "image_pull/ipb_002_registry_auth_failure.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The image pull failed with a 401 Unauthorized error from the private.registry.corp registry, indicating incorrect or missing registry credentials. This is likely due to an invalid imagePullSecret or misconfigured service account permissions.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "401",
+          "unauthorized",
+          "registry",
+          "credentials",
+          "imagePullSecret"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "231fbd3a-f1a9-4ad5-b229-5ecc51fcb392",
+        "incident_id": "1548a025-90e9-4555-8de0-4bcf83d80464",
+        "created_at": "2026-07-11T06:55:00.487215",
+        "root_cause": "The image pull failed with a 401 Unauthorized error from the private.registry.corp registry, indicating incorrect or missing registry credentials. This is likely due to an invalid imagePullSecret or misconfigured service account permissions.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod backend-api-3ac7e2-qx5nt -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3166,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_003_gcr_iam_permission",
+      "case_file": "image_pull/ipb_003_gcr_iam_permission.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The image pull failed with a 403 Forbidden error, indicating the service account lacks the necessary permission to access the image from GCR.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "403",
+          "forbidden",
+          "service account",
+          "permission",
+          "GCR"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "be5cca4b-bf41-4e9d-a94f-bee49bb0b10c",
+        "incident_id": "bf639bb6-421f-4037-83f1-d79c3a27b0b9",
+        "created_at": "2026-07-11T06:55:20.332559",
+        "root_cause": "The image pull failed with a 403 Forbidden error, indicating the service account lacks the necessary permission to access the image from GCR.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod ml-trainer-2bf4c9-hk7vz -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3962,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_004_typo_in_image_name",
+      "case_file": "image_pull/ipb_004_typo_in_image_name.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The image pull failed because the specified image 'ngnix:1.25.3' was not found in the registry, likely due to a typo in the image name (e.g., 'ngnix' instead of 'nginx'). The registry denied access because the repository does not exist.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "ngnix",
+          "typo",
+          "image",
+          "not found"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "c4b3be64-8b3a-4273-a4d9-54ba833c3178",
+        "incident_id": "c6c82852-96ee-476d-a1c8-c064982c05f1",
+        "created_at": "2026-07-09T11:04:14.808390",
+        "root_cause": "The image pull failed because the specified image 'ngnix:1.25.3' was not found in the registry, likely due to a typo in the image name (e.g., 'ngnix' instead of 'nginx'). The registry denied access because the repository does not exist.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl get pod web-frontend-4af1c9-rz3ew -n production -o yaml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3574,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_005_docker_hub_rate_limit",
+      "case_file": "image_pull/ipb_005_docker_hub_rate_limit.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The image pull failed due to a Docker Hub rate limit (429 toomanyrequests) for the image \"python:3.12-slim\". This indicates that the unauthenticated pull limit has been exceeded.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "rate limit",
+          "429",
+          "Docker Hub",
+          "toomanyrequests"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "71110781-7545-489b-9bde-9815f16f1b15",
+        "incident_id": "f7a1c116-4742-417a-bdd1-70f688b54162",
+        "created_at": "2026-07-11T06:55:39.860294",
+        "root_cause": "The image pull failed due to a Docker Hub rate limit (429 toomanyrequests) for the image \"python:3.12-slim\". This indicates that the unauthenticated pull limit has been exceeded.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod batch-runner-7bc3d2-kn4ql -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 2486,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_001_large_dataset",
+      "case_file": "oom_killed/oom_001_large_dataset.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The 'data-processor' container was OOMKilled because it attempted to load a 10GB dataset into memory, exceeding its allocated memory limit of 512Mi. This led to an OutOfMemoryError.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "limit",
+          "OOM",
+          "512Mi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "46b6b0b3-83b8-4112-810b-f5c83922dc2e",
+        "incident_id": "a190eceb-fe7e-4161-b929-0ec1e866a7ff",
+        "created_at": "2026-07-09T11:04:51.992411",
+        "root_cause": "The 'data-processor' container was OOMKilled because it attempted to load a 10GB dataset into memory, exceeding its allocated memory limit of 512Mi. This led to an OutOfMemoryError.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod data-processor-3ef6b8-jt4mn -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3320,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_002_memory_leak_cache",
+      "case_file": "oom_killed/oom_002_memory_leak_cache.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The cache-service pod was OOMKilled because its memory usage exceeded the 256Mi limit due to unbounded cache growth, as indicated by the \"Cache eviction policy not configured\" error.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "cache",
+          "memory",
+          "leak",
+          "eviction",
+          "unbounded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "d54ac404-fc35-44b2-b947-0a7748457faa",
+        "incident_id": "0c6e0a6d-c058-48b3-80b6-4ffc60741ffd",
+        "created_at": "2026-07-11T06:55:59.616914",
+        "root_cause": "The cache-service pod was OOMKilled because its memory usage exceeded the 256Mi limit due to unbounded cache growth, as indicated by the \"Cache eviction policy not configured\" error.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod cache-service-4bc9e1-wr2kp -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 4104,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_003_image_processing",
+      "case_file": "oom_killed/oom_003_image_processing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The pod was OOMKilled due to an OutOfMemoryError while processing a large 8000x6000px RAW image with a 12-filter pipeline, exceeding its 512Mi memory limit.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "image",
+          "processing",
+          "large",
+          "buffer"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "af1566d6-f7a4-42fe-a608-67a41f543351",
+        "incident_id": "cf949884-2a2c-46cb-bc16-10c32ab42811",
+        "created_at": "2026-07-11T06:56:18.818565",
+        "root_cause": "The pod was OOMKilled due to an OutOfMemoryError while processing a large 8000x6000px RAW image with a 12-filter pipeline, exceeding its 512Mi memory limit.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod image-resizer-7c2d4a-nb8qr -n media",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3469,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_004_jvm_heap",
+      "case_file": "oom_killed/oom_004_jvm_heap.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod was OOMKilled because the Java application's JVM heap was configured with -Xmx4g, exceeding the Kubernetes container's memory limit of 2Gi. This led to a java.lang.OutOfMemoryError: Java heap space and subsequent termination by the kernel.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "JVM",
+          "heap",
+          "-Xmx4g",
+          "OutOfMemoryError",
+          "2Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "72697254-112f-4b08-bce7-cd66830360da",
+        "incident_id": "e631ac3c-9b71-4dbb-8743-4d1e4b9ffa8c",
+        "created_at": "2026-07-09T11:05:50.323381",
+        "root_cause": "The pod was OOMKilled because the Java application's JVM heap was configured with -Xmx4g, exceeding the Kubernetes container's memory limit of 2Gi. This led to a java.lang.OutOfMemoryError: Java heap space and subsequent termination by the kernel.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl get deployment java-backend -n production -o yaml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 4985,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_005_numpy_array_explosion",
+      "case_file": "oom_killed/oom_005_numpy_array_explosion.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The ml-trainer pod was OOMKilled because it attempted to allocate 18.6 GiB of memory for a numpy array operation on a large dataset, exceeding its configured memory limit of 8Gi. This resulted in an OutOfMemoryError.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "numpy",
+          "MemoryError",
+          "array",
+          "OOMKilled"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "1571b14d-7896-4777-89ba-387fc01b0142",
+        "incident_id": "ba3f7f5c-b8b6-42f4-829e-95c945a6363d",
+        "created_at": "2026-07-09T11:06:09.053291",
+        "root_cause": "The ml-trainer pod was OOMKilled because it attempted to allocate 18.6 GiB of memory for a numpy array operation on a large dataset, exceeding its configured memory limit of 8Gi. This resulted in an OutOfMemoryError.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod ml-trainer-9d2a4f-bv6ys -n data",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3312,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_006_node_pressure",
+      "case_file": "oom_killed/oom_006_node_pressure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The pod was OOMKilled with exit code 137 because the node experienced severe node memory pressure, leading to eviction. The container's memory limit was 1Gi, but the node's overall memory exhaustion caused the termination.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "node memory pressure",
+          "eviction",
+          "threshold",
+          "memory"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "c21b1f39-c0db-4f52-ae22-daa64222bab8",
+        "incident_id": "30bfd249-55e4-4ff8-b35f-0620d59b7256",
+        "created_at": "2026-07-11T06:56:39.510356",
+        "root_cause": "The pod was OOMKilled with exit code 137 because the node experienced severe node memory pressure, leading to eviction. The container's memory limit was 1Gi, but the node's overall memory exhaustion caused the termination.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe pod log-aggregator-4fe2a9-cs1hb -n monitoring",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 5115,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_001_pod_count_limit",
+      "case_file": "quota_exceeded/qex_001_pod_count_limit.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod 'report-gen-6de4c2-ab8wp' failed to deploy because the 'production-quota' ResourceQuota in the 'production' namespace has been exceeded for the 'pods' resource. The limit of 10 pods has been reached.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "pods",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "6b20e9b8-6ee6-446e-8e77-95a2e559e99f",
+        "incident_id": "4e1fa4f5-7391-4106-866b-511f69cc147c",
+        "created_at": "2026-07-09T11:06:45.946265",
+        "root_cause": "The pod 'report-gen-6de4c2-ab8wp' failed to deploy because the 'production-quota' ResourceQuota in the 'production' namespace has been exceeded for the 'pods' resource. The limit of 10 pods has been reached.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota production-quota -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3322,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_002_cpu_quota",
+      "case_file": "quota_exceeded/qex_002_cpu_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod failed to schedule because the requests.cpu resource quota for the analytics namespace was exceeded. The request for 4 CPU units would push the total usage beyond the analytics-quota limit of 32 CPU units.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "cpu",
+          "requests",
+          "exceeded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "66102b94-6ac3-49ad-93a3-575eb41e7e7d",
+        "incident_id": "45a15df1-4e49-45e4-a010-140f0e3f1866",
+        "created_at": "2026-07-09T11:07:04.618931",
+        "root_cause": "The pod failed to schedule because the requests.cpu resource quota for the analytics namespace was exceeded. The request for 4 CPU units would push the total usage beyond the analytics-quota limit of 32 CPU units.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota analytics-quota -n analytics",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3286,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_003_memory_quota",
+      "case_file": "quota_exceeded/qex_003_memory_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod failed to schedule because the 'ml-quota' ResourceQuota for 'requests.memory' in the 'ml' namespace was exceeded. The request for 4Gi pushed the total usage beyond the 32Gi limit.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "memory",
+          "exceeded",
+          "Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "ba410368-7dc7-4bb0-a9b7-ec9ae02b9335",
+        "incident_id": "cf59064d-6e73-4f60-8135-fd3eb0a0a2a3",
+        "created_at": "2026-07-11T06:56:58.700574",
+        "root_cause": "The pod failed to schedule because the 'ml-quota' ResourceQuota for 'requests.memory' in the 'ml' namespace was exceeded. The request for 4Gi pushed the total usage beyond the 32Gi limit.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota ml-quota -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3419,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_004_pvc_quota",
+      "case_file": "quota_exceeded/qex_004_pvc_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The creation of a new PersistentVolumeClaim (PVC) failed because the 'production' namespace has exceeded its ResourceQuota limit of 5 for persistentvolumeclaims.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "persistentvolumeclaims",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "1de72016-3327-4d57-9554-7d080bc36da8",
+        "incident_id": "8f064bd3-672c-4bd4-bc3e-42672e38631c",
+        "created_at": "2026-07-09T11:07:42.095679",
+        "root_cause": "The creation of a new PersistentVolumeClaim (PVC) failed because the 'production' namespace has exceeded its ResourceQuota limit of 5 for persistentvolumeclaims.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota production-quota -n production",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 3256,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_005_services_quota",
+      "case_file": "quota_exceeded/qex_005_services_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod failed to provision a new load balancer service because the ResourceQuota 'services-quota' in the 'services' namespace for 'services.loadbalancers' has been exceeded. The limit is 2, and 2 are currently in use, preventing the creation of 'external-lb-3'.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "loadbalancers",
+          "exceeded",
+          "services"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "3760319f-8031-4f50-9973-d399332d6b24",
+        "incident_id": "a3734955-003d-474f-a476-9738c2054831",
+        "created_at": "2026-07-09T11:08:00.412296",
+        "root_cause": "The pod failed to provision a new load balancer service because the ResourceQuota 'services-quota' in the 'services' namespace for 'services.loadbalancers' has been exceeded. The limit is 2, and 2 are currently in use, preventing the creation of 'external-lb-3'.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe resourcequota services-quota -n services",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "gemini-2.5-flash",
+        "latency_ms": 2908,
+        "action_type": "NONE"
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "incident": {
+    "pod_name": "payment-api-7d9f8b-xk2pq",
+    "namespace": "production",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-01T10:00:00Z",
+    "container_statuses": [
+      {
+        "name": "payment-api",
+        "image": "payments:v2.3.1",
+        "restart_count": 18,
+        "ready": false,
+        "last_exit_code": 1,
+        "last_termination_reason": "Error"
+      }
+    ],
+    "log_lines": [
+      "ERROR: Failed to connect to database: connection refused",
+      "FATAL: Could not establish database connection after 3 retries",
+      "panic: runtime error: invalid memory address or nil pointer dereference",
+      "exit status 1"
+    ],
+    "resource_limits": {
+      "cpu_request": "100m",
+      "cpu_limit": "500m",
+      "memory_request": "128Mi",
+      "memory_limit": "256Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["database", "connection", "refused"],
+    "confidence_min": "medium",
+    "action_type": "NONE",
+    "notes": "DB connection refused — external dependency, not fixable by executor"
+  }
+}

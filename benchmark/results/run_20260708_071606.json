@@ -1,0 +1,698 @@
+{
+  "run_id": "20260708_071606",
+  "timestamp": "2026-07-08T07:24:23.126487+00:00",
+  "healmesh_core_url": "http://localhost:8000",
+  "total_cases": 32,
+  "passed": 3,
+  "failed": 29,
+  "accuracy": 0.0938,
+  "accuracy_pct": "9.4%",
+  "phase_gate_threshold": "80%",
+  "phase_gate_passed": false,
+  "breakdown": {
+    "keyword_match_rate": "3/32",
+    "action_match_rate": "27/32",
+    "confidence_ok_rate": "4/32"
+  },
+  "results": [
+    {
+      "case_id": "clb_001_db_connection_refused",
+      "case_file": "crash_loop/clb_001_db_connection_refused.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "database",
+          "connection",
+          "refused"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      }
+    },
+    {
+      "case_id": "clb_002_missing_env_var",
+      "case_file": "crash_loop/clb_002_missing_env_var.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The auth-service pod is crashing because the required environment variable JWT_SECRET is missing, preventing the application from starting successfully.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "environment",
+          "variable",
+          "missing",
+          "JWT_SECRET"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_003_oom_causing_crash_loop",
+      "case_file": "crash_loop/clb_003_oom_causing_crash_loop.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The worker pod is repeatedly crashing due to OOMKilled (exit code 137). The application is attempting to load a large number of records into memory, exceeding its configured memory limit of 256Mi.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "memory",
+          "OOM",
+          "limit",
+          "killed"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_004_liveness_probe_killing_pod",
+      "case_file": "crash_loop/clb_004_liveness_probe_killing_pod.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "liveness",
+          "probe",
+          "failing",
+          "503"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_005_file_permission_error",
+      "case_file": "crash_loop/clb_005_file_permission_error.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "permission",
+          "denied",
+          "model",
+          "file"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_006_config_map_missing",
+      "case_file": "crash_loop/clb_006_config_map_missing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "ConfigMap",
+          "APP_CONFIG_FILE",
+          "missing",
+          "configuration"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_007_port_already_in_use",
+      "case_file": "crash_loop/clb_007_port_already_in_use.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The 'api-gateway' container is repeatedly crashing because the application inside it fails to bind to port 8080, indicating that the address is already in use (EADDRINUSE). This prevents the server from starting successfully.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "EADDRINUSE",
+          "port",
+          "8080",
+          "already in use"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_008_bad_command_entrypoint",
+      "case_file": "crash_loop/clb_008_bad_command_entrypoint.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "entrypoint",
+          "/app/start.sh",
+          "not found",
+          "127"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_009_redis_connection_refused",
+      "case_file": "crash_loop/clb_009_redis_connection_refused.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "Redis",
+          "connection refused",
+          "6379",
+          "session store"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "clb_010_ssl_cert_expired",
+      "case_file": "crash_loop/clb_010_ssl_cert_expired.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "x509",
+          "certificate",
+          "expired",
+          "TLS"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "fro_001_readiness_probe_failing",
+      "case_file": "failed_rollout/fro_001_readiness_probe_failing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "readiness",
+          "probe",
+          "failing",
+          "500",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "fro_002_bad_image_tag",
+      "case_file": "failed_rollout/fro_002_bad_image_tag.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": true,
+        "passed": false,
+        "root_cause_returned": "The deployment failed to roll out because the specified container image 'orders:v3.2.0-bad-image' could not be found in the image registry, preventing pods from starting.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "pull",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "fro_003_insufficient_cpu",
+      "case_file": "failed_rollout/fro_003_insufficient_cpu.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "insufficient",
+          "cpu",
+          "nodes",
+          "resources",
+          "pending"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "fro_004_insufficient_memory",
+      "case_file": "failed_rollout/fro_004_insufficient_memory.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "Insufficient memory",
+          "nodes",
+          "8Gi",
+          "scheduling"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "fro_005_config_validation_error",
+      "case_file": "failed_rollout/fro_005_config_validation_error.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "config",
+          "YAML",
+          "parse error",
+          "validation",
+          "readiness"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "fro_006_pending_pvc",
+      "case_file": "failed_rollout/fro_006_pending_pvc.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "PersistentVolumeClaim",
+          "PVC",
+          "not bound",
+          "Pending"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "ipb_001_tag_not_found",
+      "case_file": "image_pull/ipb_001_tag_not_found.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "tag",
+          "v9.9.9"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "ipb_002_registry_auth_failure",
+      "case_file": "image_pull/ipb_002_registry_auth_failure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "401",
+          "unauthorized",
+          "registry",
+          "credentials",
+          "imagePullSecret"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "ipb_003_gcr_iam_permission",
+      "case_file": "image_pull/ipb_003_gcr_iam_permission.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "403",
+          "forbidden",
+          "service account",
+          "permission",
+          "GCR"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "ipb_004_typo_in_image_name",
+      "case_file": "image_pull/ipb_004_typo_in_image_name.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "ngnix",
+          "typo",
+          "image",
+          "not found"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "ipb_005_docker_hub_rate_limit",
+      "case_file": "image_pull/ipb_005_docker_hub_rate_limit.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "rate limit",
+          "429",
+          "Docker Hub",
+          "toomanyrequests"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "oom_001_large_dataset",
+      "case_file": "oom_killed/oom_001_large_dataset.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "memory",
+          "limit",
+          "OOM",
+          "512Mi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "oom_002_memory_leak_cache",
+      "case_file": "oom_killed/oom_002_memory_leak_cache.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "cache",
+          "memory",
+          "leak",
+          "eviction",
+          "unbounded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "oom_003_image_processing",
+      "case_file": "oom_killed/oom_003_image_processing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "memory",
+          "image",
+          "processing",
+          "large",
+          "buffer"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      }
+    },
+    {
+      "case_id": "oom_004_jvm_heap",
+      "case_file": "oom_killed/oom_004_jvm_heap.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "JVM",
+          "heap",
+          "-Xmx4g",
+          "OutOfMemoryError",
+          "2Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "oom_005_numpy_array_explosion",
+      "case_file": "oom_killed/oom_005_numpy_array_explosion.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "numpy",
+          "MemoryError",
+          "array",
+          "OOMKilled"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      }
+    },
+    {
+      "case_id": "oom_006_node_pressure",
+      "case_file": "oom_killed/oom_006_node_pressure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "node memory pressure",
+          "eviction",
+          "threshold",
+          "memory"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      }
+    },
+    {
+      "case_id": "qex_001_pod_count_limit",
+      "case_file": "quota_exceeded/qex_001_pod_count_limit.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "pods",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "qex_002_cpu_quota",
+      "case_file": "quota_exceeded/qex_002_cpu_quota.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "cpu",
+          "requests",
+          "exceeded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "qex_003_memory_quota",
+      "case_file": "quota_exceeded/qex_003_memory_quota.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "memory",
+          "exceeded",
+          "Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "qex_004_pvc_quota",
+      "case_file": "quota_exceeded/qex_004_pvc_quota.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "persistentvolumeclaims",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    },
+    {
+      "case_id": "qex_005_services_quota",
+      "case_file": "quota_exceeded/qex_005_services_quota.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "loadbalancers",
+          "exceeded",
+          "services"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      }
+    }
+  ]
+}

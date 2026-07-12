@@ -1,0 +1,28 @@
+{
+  "incident": {
+    "pod_name": "web-frontend-4af1c9-rz3ew",
+    "namespace": "production",
+    "failure_type": "ImagePullBackOff",
+    "detected_at": "2026-07-06T10:05:00Z",
+    "container_statuses": [
+      {
+        "name": "web-frontend",
+        "image": "ngnix:1.25.3",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "Failed to pull image \"ngnix:1.25.3\": rpc error: code = NotFound desc = failed to pull and unpack image: failed to resolve reference \"docker.io/library/ngnix:1.25.3\": pull access denied, repository does not exist or may require 'docker login': denied: requested access to the resource is denied",
+      "Error: ErrImagePull — image ngnix:1.25.3 not found"
+    ],
+    "image": "ngnix:1.25.3",
+    "image_pull_policy": "Always"
+  },
+  "expected": {
+    "root_cause_keywords": ["ngnix", "typo", "image", "not found"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Image name 'ngnix' is a typo for 'nginx' — deployment spec must be corrected to reference the correct image name"
+  }
+}

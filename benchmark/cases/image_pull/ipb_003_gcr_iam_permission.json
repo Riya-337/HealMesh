@@ -1,0 +1,27 @@
+{
+  "incident": {
+    "pod_name": "ml-trainer-2bf4c9-hk7vz",
+    "namespace": "ml",
+    "failure_type": "ImagePullBackOff",
+    "detected_at": "2026-07-03T11:00:00Z",
+    "container_statuses": [
+      {
+        "name": "ml-trainer",
+        "image": "gcr.io/myproject/ml-trainer:sha256-abc123",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "Failed to pull image: rpc error: code = Unknown desc = failed to pull and unpack image: failed to resolve reference: unexpected status code 403 Forbidden: denied: Requesting entity was denied access. Ensure the service account has the required permission to access the image."
+    ],
+    "image": "gcr.io/myproject/ml-trainer:sha256-abc123",
+    "image_pull_policy": "IfNotPresent"
+  },
+  "expected": {
+    "root_cause_keywords": ["403", "forbidden", "service account", "permission", "GCR"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Node service account lacks roles/storage.objectViewer for GCR bucket"
+  }
+}

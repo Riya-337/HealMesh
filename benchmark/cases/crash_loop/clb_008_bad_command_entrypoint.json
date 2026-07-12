@@ -1,0 +1,35 @@
+{
+  "incident": {
+    "pod_name": "worker-service-2cf5e1-hq9nz",
+    "namespace": "staging",
+    "failure_type": "CrashLoopBackOff",
+    "detected_at": "2026-07-06T11:03:00Z",
+    "container_statuses": [
+      {
+        "name": "worker-service",
+        "image": "worker:v2.0.0-beta",
+        "restart_count": 22,
+        "ready": false,
+        "last_exit_code": 127,
+        "last_termination_reason": "Error"
+      }
+    ],
+    "log_lines": [
+      "sh: /app/start.sh: not found",
+      "exec /app/start.sh: no such file or directory",
+      "Error: failed to start container: OCI runtime create failed"
+    ],
+    "resource_limits": {
+      "cpu_request": "100m",
+      "cpu_limit": "500m",
+      "memory_request": "64Mi",
+      "memory_limit": "128Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["entrypoint", "/app/start.sh", "not found", "127"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Exit code 127 indicates the entrypoint binary /app/start.sh does not exist in the image — image was built incorrectly or wrong image tag used"
+  }
+}

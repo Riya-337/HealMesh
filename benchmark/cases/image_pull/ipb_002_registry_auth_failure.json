@@ -1,0 +1,27 @@
+{
+  "incident": {
+    "pod_name": "backend-api-3ac7e2-qx5nt",
+    "namespace": "production",
+    "failure_type": "ImagePullBackOff",
+    "detected_at": "2026-07-03T10:00:00Z",
+    "container_statuses": [
+      {
+        "name": "backend-api",
+        "image": "private.registry.corp/backend:v1.4.2",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "Failed to pull image \"private.registry.corp/backend:v1.4.2\": rpc error: code = Unknown desc = failed to pull and unpack image: failed to resolve reference: unexpected status code 401 Unauthorized"
+    ],
+    "image": "private.registry.corp/backend:v1.4.2",
+    "image_pull_policy": "Always"
+  },
+  "expected": {
+    "root_cause_keywords": ["401", "unauthorized", "registry", "credentials", "imagePullSecret"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Missing or expired imagePullSecret for private registry"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "incident": {
+    "pod_name": "batch-runner-7bc3d2-kn4ql",
+    "namespace": "services",
+    "failure_type": "ImagePullBackOff",
+    "detected_at": "2026-07-06T14:30:00Z",
+    "container_statuses": [
+      {
+        "name": "batch-runner",
+        "image": "python:3.12-slim",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "Failed to pull image \"python:3.12-slim\": rpc error: code = Unknown desc = failed to pull and unpack image: failed to fetch anonymous token: unexpected status code 429 Too Many Requests",
+      "ERROR: toomanyrequests: You have reached your pull rate limit. You may increase the limit by authenticating and upgrading: https://www.docker.com/increase-rate-limit",
+      "Back-off pulling image \"python:3.12-slim\""
+    ],
+    "image": "python:3.12-slim",
+    "image_pull_policy": "IfNotPresent"
+  },
+  "expected": {
+    "root_cause_keywords": ["rate limit", "429", "Docker Hub", "toomanyrequests"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Docker Hub anonymous pull rate limit hit (429) — authenticate with a Docker Hub account or mirror image to a private registry"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "incident": {
+    "pod_name": "report-gen-6de4c2-ab8wp",
+    "namespace": "production",
+    "failure_type": "ResourceQuotaExceeded",
+    "detected_at": "2026-07-05T09:00:00Z",
+    "log_lines": [
+      "Error from server (Forbidden): pods \"report-gen-6de4c2-ab8wp\" is forbidden: exceeded quota: production-quota, requested: pods=1, used: pods=10, limited: pods=10"
+    ],
+    "quota_resource": "pods",
+    "quota_limit": "10",
+    "quota_used": "10"
+  },
+  "expected": {
+    "root_cause_keywords": ["quota", "pods", "exceeded", "limit"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Pod count quota exhausted — delete unused pods or request quota increase"
+  }
+}

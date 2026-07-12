@@ -1,0 +1,1242 @@
+{
+  "run_id": "20260711_083018",
+  "timestamp": "2026-07-11T09:12:12.576916+00:00",
+  "healmesh_core_url": "http://127.0.0.1:8000",
+  "total_cases": 32,
+  "passed": 3,
+  "failed": 29,
+  "accuracy": 0.0938,
+  "accuracy_pct": "9.4%",
+  "phase_gate_threshold": "80%",
+  "phase_gate_passed": false,
+  "breakdown": {
+    "keyword_match_rate": "3/32",
+    "action_match_rate": "27/32",
+    "confidence_ok_rate": "3/32"
+  },
+  "results": [
+    {
+      "case_id": "clb_001_db_connection_refused",
+      "case_file": "crash_loop/clb_001_db_connection_refused.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "database",
+          "connection",
+          "refused"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "861dfa88-9fb0-4f0a-9f0b-82b44e2957b8",
+        "incident_id": "a7d1d5ca-5419-4eb8-94d1-9ed686c5d194",
+        "created_at": "2026-07-11T08:30:19.731636",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 820,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_002_missing_env_var",
+      "case_file": "crash_loop/clb_002_missing_env_var.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The auth-service pod in the production environment is failing due to a missing required environment variable JWT_SECRET.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "environment",
+          "variable",
+          "missing",
+          "JWT_SECRET"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "56519401-3a7f-4662-9459-f02e48f22b53",
+        "incident_id": "4451cdda-1420-424d-9bb5-0f3f213ee42f",
+        "created_at": "2026-07-11T08:30:35.779671",
+        "root_cause": "The auth-service pod in the production environment is failing due to a missing required environment variable JWT_SECRET.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl exec -it auth-service-5c8d9f-mn3rt -- env | grep JWT_SECRET",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 383,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_003_oom_causing_crash_loop",
+      "case_file": "crash_loop/clb_003_oom_causing_crash_loop.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "memory",
+          "OOM",
+          "limit",
+          "killed"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "abce1e0b-d980-4059-8c39-38428db0c6d9",
+        "incident_id": "61f1d837-6bcf-4f13-85ab-654487b50ab7",
+        "created_at": "2026-07-11T08:31:07.659964",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 16363,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_004_liveness_probe_killing_pod",
+      "case_file": "crash_loop/clb_004_liveness_probe_killing_pod.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "liveness",
+          "probe",
+          "failing",
+          "503"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "2bb496a0-2e2e-4c14-9e65-5a295cac7344",
+        "incident_id": "caeb7a10-0b47-4fcf-8142-ff8de1b6c57f",
+        "created_at": "2026-07-11T08:31:24.990303",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1352,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_005_file_permission_error",
+      "case_file": "crash_loop/clb_005_file_permission_error.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "permission",
+          "denied",
+          "model",
+          "file"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "6b5c7f59-a58f-48be-9408-046d22bcab54",
+        "incident_id": "d8570e6d-f9bc-4cbc-b069-aa660c40d93d",
+        "created_at": "2026-07-11T08:31:42.406622",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1344,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_006_config_map_missing",
+      "case_file": "crash_loop/clb_006_config_map_missing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "ConfigMap",
+          "APP_CONFIG_FILE",
+          "missing",
+          "configuration"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "e4cbe722-e1ce-4f9b-af5f-0985f7869bd7",
+        "incident_id": "c0e13139-4d31-4423-9ee6-dbeaa54f3dde",
+        "created_at": "2026-07-11T08:31:59.823851",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1406,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_007_port_already_in_use",
+      "case_file": "crash_loop/clb_007_port_already_in_use.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "EADDRINUSE",
+          "port",
+          "8080",
+          "already in use"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "d5e83333-6571-4e31-a62e-c6c30266cfec",
+        "incident_id": "f08137a8-fe1d-4659-a090-d5e3fbab8ae8",
+        "created_at": "2026-07-11T08:32:17.504075",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1241,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_008_bad_command_entrypoint",
+      "case_file": "crash_loop/clb_008_bad_command_entrypoint.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "entrypoint",
+          "/app/start.sh",
+          "not found",
+          "127"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "4f3dae56-b29a-4edf-b8b1-29b27f55865a",
+        "incident_id": "e3a3abb2-bccf-48c5-8c9a-669ae31b7dd7",
+        "created_at": "2026-07-11T08:32:35.238984",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1272,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_009_redis_connection_refused",
+      "case_file": "crash_loop/clb_009_redis_connection_refused.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "Redis",
+          "connection refused",
+          "6379",
+          "session store"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "33fc5e8d-8b33-4c2d-9f7b-77119a9960d1",
+        "incident_id": "d31ff362-46d4-46ca-a27f-6b8cedfda11c",
+        "created_at": "2026-07-11T08:32:52.566393",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1181,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "clb_010_ssl_cert_expired",
+      "case_file": "crash_loop/clb_010_ssl_cert_expired.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "x509",
+          "certificate",
+          "expired",
+          "TLS"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "92716a3f-1b45-4ffa-b615-5954befcfc77",
+        "incident_id": "ffb56248-ab6d-41b6-80ef-5a4b2be0c2c2",
+        "created_at": "2026-07-11T08:33:09.523224",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1306,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_001_readiness_probe_failing",
+      "case_file": "failed_rollout/fro_001_readiness_probe_failing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "readiness",
+          "probe",
+          "failing",
+          "500",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "79ecb50f-72f3-4884-b8e0-54a8aa430af8",
+        "incident_id": "0689214f-3770-4307-bb23-4d0ec3cfaf9f",
+        "created_at": "2026-07-11T08:33:27.122722",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1235,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_002_bad_image_tag",
+      "case_file": "failed_rollout/fro_002_bad_image_tag.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "pull",
+          "rollout"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "cfe6615e-eb7e-42d5-850e-fa780484531f",
+        "incident_id": "0bfb19ec-c244-4551-8608-7c5fb618e8b8",
+        "created_at": "2026-07-11T08:33:44.888258",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1237,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_003_insufficient_cpu",
+      "case_file": "failed_rollout/fro_003_insufficient_cpu.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "insufficient",
+          "cpu",
+          "nodes",
+          "resources",
+          "pending"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "9e6d7a3c-698d-4896-a51f-00e46f3ad772",
+        "incident_id": "1df597e7-340d-491c-a3af-13f111d4dd84",
+        "created_at": "2026-07-11T08:34:02.032036",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1466,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_004_insufficient_memory",
+      "case_file": "failed_rollout/fro_004_insufficient_memory.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "Insufficient memory",
+          "nodes",
+          "8Gi",
+          "scheduling"
+        ],
+        "action_expected": "SCALE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "d0af8089-d627-4138-948a-b0f71e53aaf9",
+        "incident_id": "92dbf0bf-ae44-4e51-9a2f-bbb1238bf50d",
+        "created_at": "2026-07-11T08:34:19.434365",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1269,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_005_config_validation_error",
+      "case_file": "failed_rollout/fro_005_config_validation_error.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": false,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "config",
+          "YAML",
+          "parse error",
+          "validation",
+          "readiness"
+        ],
+        "action_expected": "REDEPLOY",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "b75e41c3-186c-454c-b6b5-adce46651c66",
+        "incident_id": "b8a3050f-1ea1-49b3-bfce-ff99e2b6c44d",
+        "created_at": "2026-07-11T08:34:36.932238",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1417,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "fro_006_pending_pvc",
+      "case_file": "failed_rollout/fro_006_pending_pvc.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "PersistentVolumeClaim",
+          "PVC",
+          "not bound",
+          "Pending"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "7e695d11-be10-4599-b48e-3e7cede30d0a",
+        "incident_id": "8847ab14-3bd7-454a-a29c-3072be28089c",
+        "created_at": "2026-07-11T08:34:54.147702",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1384,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_001_tag_not_found",
+      "case_file": "image_pull/ipb_001_tag_not_found.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "image",
+          "not found",
+          "tag",
+          "v9.9.9"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "0eceaebb-ec93-43cc-a588-32ddba23a463",
+        "incident_id": "24417b3d-3317-4895-84c2-828f109b5b45",
+        "created_at": "2026-07-11T08:35:11.984093",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1381,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_002_registry_auth_failure",
+      "case_file": "image_pull/ipb_002_registry_auth_failure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "401",
+          "unauthorized",
+          "registry",
+          "credentials",
+          "imagePullSecret"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "b1b3e567-a08e-4121-863a-6b7504198a9f",
+        "incident_id": "39c034d1-c4ce-4ff8-9fa1-7a1b791eb929",
+        "created_at": "2026-07-11T08:35:29.702093",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1198,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_003_gcr_iam_permission",
+      "case_file": "image_pull/ipb_003_gcr_iam_permission.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "403",
+          "forbidden",
+          "service account",
+          "permission",
+          "GCR"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "93bb341a-65ae-454e-a024-049175e6de14",
+        "incident_id": "2d536166-1e25-4dbf-9750-a6fe615bbc61",
+        "created_at": "2026-07-11T08:41:33.094764",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 347210,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_004_typo_in_image_name",
+      "case_file": "image_pull/ipb_004_typo_in_image_name.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "ngnix",
+          "typo",
+          "image",
+          "not found"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "9db2e744-6017-43c1-aeb9-380a01211137",
+        "incident_id": "d61b0dd9-f796-4abe-ae36-fa9cee7d57a1",
+        "created_at": "2026-07-11T08:41:50.837760",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1344,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "ipb_005_docker_hub_rate_limit",
+      "case_file": "image_pull/ipb_005_docker_hub_rate_limit.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "rate limit",
+          "429",
+          "Docker Hub",
+          "toomanyrequests"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "cf3f83b7-3838-41f3-a643-d1ce1263c2bb",
+        "incident_id": "a190c3cb-f318-452c-be7a-a54997b41576",
+        "created_at": "2026-07-11T09:09:12.046472",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1550,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_001_large_dataset",
+      "case_file": "oom_killed/oom_001_large_dataset.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "memory",
+          "limit",
+          "OOM",
+          "512Mi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "146e6503-cfa5-4c8e-84ec-938c0e258bdd",
+        "incident_id": "9f85a18a-57d9-4c07-88dd-0dec4df681d2",
+        "created_at": "2026-07-11T09:09:29.523879",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": true,
+          "parse_error": "LLM response was None"
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 1273,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_002_memory_leak_cache",
+      "case_file": "oom_killed/oom_002_memory_leak_cache.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "cache",
+          "memory",
+          "leak",
+          "eviction",
+          "unbounded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "a60399f1-d963-4d03-b83d-eb6ab4f0f2b1",
+        "incident_id": "e237b154-88bc-47f0-b30e-233c662e146e",
+        "created_at": "2026-07-11T09:09:48.521356",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 2633,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_003_image_processing",
+      "case_file": "oom_killed/oom_003_image_processing.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "memory",
+          "image",
+          "processing",
+          "large",
+          "buffer"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "15508a95-0098-416b-a816-15200d92b2d1",
+        "incident_id": "4defaa9b-83f6-434f-81b4-3b057730e397",
+        "created_at": "2026-07-11T09:10:04.876471",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 535,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_004_jvm_heap",
+      "case_file": "oom_killed/oom_004_jvm_heap.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "JVM",
+          "heap",
+          "-Xmx4g",
+          "OutOfMemoryError",
+          "2Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "85ec4070-b666-4c25-bac8-005d2bb6cf8f",
+        "incident_id": "1d78a276-468d-49ca-8619-af0800a943f4",
+        "created_at": "2026-07-11T09:10:20.715633",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 343,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_005_numpy_array_explosion",
+      "case_file": "oom_killed/oom_005_numpy_array_explosion.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "numpy",
+          "MemoryError",
+          "array",
+          "OOMKilled"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "ddc7809b-adad-4a67-a7e6-58d0a7a1a16f",
+        "incident_id": "d66de2cb-a649-4079-b040-1259e9a48b71",
+        "created_at": "2026-07-11T09:10:36.692563",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 510,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "oom_006_node_pressure",
+      "case_file": "oom_killed/oom_006_node_pressure.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "node memory pressure",
+          "eviction",
+          "threshold",
+          "memory"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "medium"
+      },
+      "diagnosis": {
+        "diagnosis_id": "7e1bf6db-c8a4-43cb-9839-b2b224ea8e79",
+        "incident_id": "dc486e22-39b1-4048-ac1f-775f88499b91",
+        "created_at": "2026-07-11T09:10:52.746683",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 374,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_001_pod_count_limit",
+      "case_file": "quota_exceeded/qex_001_pod_count_limit.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "pods",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "69f9d3aa-0c34-4901-b40e-aac4bea2c28a",
+        "incident_id": "108834ff-fad5-4bf1-812f-6dc79ba20ccb",
+        "created_at": "2026-07-11T09:11:08.445458",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 327,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_002_cpu_quota",
+      "case_file": "quota_exceeded/qex_002_cpu_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The Kubernetes pod 'analytics-worker-9fa2d3-cq1vr' in namespace 'analytics' exceeded the quota for requests.cpu, which is limited to 32.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "cpu",
+          "requests",
+          "exceeded"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "cfaec94c-ecd3-444e-8528-cd3b9f2f2685",
+        "incident_id": "859c94bb-1cb2-4531-aa50-c34ea73a4d50",
+        "created_at": "2026-07-11T09:11:24.373929",
+        "root_cause": "The Kubernetes pod 'analytics-worker-9fa2d3-cq1vr' in namespace 'analytics' exceeded the quota for requests.cpu, which is limited to 32.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe quota analytics-quota -n analytics",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 458,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_003_memory_quota",
+      "case_file": "quota_exceeded/qex_003_memory_quota.json",
+      "score": {
+        "keyword_match": true,
+        "action_match": true,
+        "confidence_ok": true,
+        "passed": true,
+        "root_cause_returned": "The pod 'model-serving-1ca8b4-dx3yp' in namespace 'ml' exceeded the memory quota of 32Gi.",
+        "action_returned": "NONE",
+        "confidence_returned": "high",
+        "keywords_expected": [
+          "quota",
+          "memory",
+          "exceeded",
+          "Gi"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "bd101211-b8c7-4e03-b42d-a99a903b833a",
+        "incident_id": "ed97b2ff-1ece-484d-9615-135dc6cc85fa",
+        "created_at": "2026-07-11T09:11:40.550618",
+        "root_cause": "The pod 'model-serving-1ca8b4-dx3yp' in namespace 'ml' exceeded the memory quota of 32Gi.",
+        "confidence": "high",
+        "suggested_manual_command": "kubectl describe quota ml-quota -n ml",
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 343,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_004_pvc_quota",
+      "case_file": "quota_exceeded/qex_004_pvc_quota.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "persistentvolumeclaims",
+          "exceeded",
+          "limit"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "daac7628-cb9d-4343-96ed-880947ca9469",
+        "incident_id": "cd19b924-f742-4dfb-9b40-8f38895d8b4e",
+        "created_at": "2026-07-11T09:11:56.346336",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 370,
+        "action_type": "NONE"
+      }
+    },
+    {
+      "case_id": "qex_005_services_quota",
+      "case_file": "quota_exceeded/qex_005_services_quota.json",
+      "score": {
+        "keyword_match": false,
+        "action_match": true,
+        "confidence_ok": false,
+        "passed": false,
+        "root_cause_returned": "Diagnosis unavailable (LLM call failed)",
+        "action_returned": "NONE",
+        "confidence_returned": "low",
+        "keywords_expected": [
+          "quota",
+          "loadbalancers",
+          "exceeded",
+          "services"
+        ],
+        "action_expected": "NONE",
+        "confidence_min_expected": "high"
+      },
+      "diagnosis": {
+        "diagnosis_id": "7888b19f-5443-4c84-8daa-983c7f9d3dde",
+        "incident_id": "21371d44-c415-4e3b-952a-982819862430",
+        "created_at": "2026-07-11T09:12:12.219123",
+        "root_cause": "Diagnosis unavailable (LLM call failed)",
+        "confidence": "low",
+        "suggested_manual_command": null,
+        "parsed_action": {
+          "action_type": "NONE",
+          "params": null,
+          "parse_failed": false,
+          "parse_error": null
+        },
+        "llm_model": "llama-3.1-8b-instant",
+        "latency_ms": 424,
+        "action_type": "NONE"
+      }
+    }
+  ]
+}

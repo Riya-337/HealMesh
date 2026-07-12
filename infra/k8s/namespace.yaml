@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: prism
+  name: healmesh
   labels:
-    name: prism
-    purpose: self-healing-mesh
+    app.kubernetes.io/name: healmesh
+    app.kubernetes.io/managed-by: helm

@@ -1,0 +1,36 @@
+{
+  "incident": {
+    "pod_name": "analytics-worker (deployment)",
+    "namespace": "production",
+    "failure_type": "FailedRollout",
+    "detected_at": "2026-07-06T16:00:00Z",
+    "container_statuses": [
+      {
+        "name": "analytics-worker",
+        "image": "analytics-worker:v2.5.0",
+        "restart_count": 0,
+        "ready": false
+      }
+    ],
+    "log_lines": [
+      "0/3 nodes are available: 3 Insufficient memory.",
+      "pod/analytics-worker-6d4f8b-pr3nw: failed to fit in any node",
+      "Warning: FailedScheduling — Insufficient memory on all available nodes"
+    ],
+    "resource_limits": {
+      "cpu_request": "1000m",
+      "cpu_limit": "4000m",
+      "memory_request": "8Gi",
+      "memory_limit": "8Gi"
+    },
+    "deployment_name": "analytics-worker",
+    "desired_replicas": 3,
+    "ready_replicas": 0
+  },
+  "expected": {
+    "root_cause_keywords": ["Insufficient memory", "nodes", "8Gi", "scheduling"],
+    "confidence_min": "high",
+    "action_type": "SCALE",
+    "notes": "Each pod requests 8Gi but no node has sufficient free memory — cluster must be scaled out with higher-memory nodes"
+  }
+}

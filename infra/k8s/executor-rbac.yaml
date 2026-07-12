@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: healmesh-executor
+  namespace: healmesh
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: healmesh-executor-role
+  namespace: default
+rules:
+- apiGroups: ["apps", "extensions"]
+  resources: ["deployments/scale"]
+  verbs: ["get", "patch", "update"]
+- apiGroups: ["apps", "extensions"]
+  resources: ["deployments"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: healmesh-executor-rolebinding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: healmesh-executor
+  namespace: healmesh
+roleRef:
+  kind: Role
+  name: healmesh-executor-role
+  apiGroup: rbac.authorization.k8s.io

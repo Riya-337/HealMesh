@@ -1,0 +1,16 @@
+[run]
+# Omit modules that require live external services (Gemini API, Slack API, Postgres).
+# These are covered by integration tests, not unit tests.
+# The security-critical modules (parser, schema, audit class structure) remain measured.
+omit =
+    main.py
+    diagnosis/llm_client.py
+    surface/slack/notifier.py
+    tests/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:

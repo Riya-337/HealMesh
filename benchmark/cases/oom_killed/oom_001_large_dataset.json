@@ -1,0 +1,36 @@
+{
+  "incident": {
+    "pod_name": "data-processor-3ef6b8-jt4mn",
+    "namespace": "production",
+    "failure_type": "OOMKilled",
+    "detected_at": "2026-07-02T09:00:00Z",
+    "container_statuses": [
+      {
+        "name": "data-processor",
+        "image": "processor:v2.0.0",
+        "restart_count": 3,
+        "ready": false,
+        "last_exit_code": 137,
+        "last_termination_reason": "OOMKilled"
+      }
+    ],
+    "log_lines": [
+      "INFO: Starting full dataset load",
+      "INFO: Loaded 10GB dataset into memory",
+      "INFO: Running aggregation pipeline...",
+      "Killed"
+    ],
+    "resource_limits": {
+      "cpu_request": "500m",
+      "cpu_limit": "2000m",
+      "memory_request": "512Mi",
+      "memory_limit": "512Mi"
+    }
+  },
+  "expected": {
+    "root_cause_keywords": ["memory", "limit", "OOM", "512Mi"],
+    "confidence_min": "high",
+    "action_type": "NONE",
+    "notes": "Memory limit 512Mi too low for 10GB dataset — needs limit increase"
+  }
+}
