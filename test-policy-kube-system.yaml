@@ -1,0 +1,8 @@
+apiVersion: healmesh.io/v1alpha1
+kind: HealPolicy
+metadata:
+  name: test-policy
+  namespace: kube-system
+spec:
+  allowedActions:
+  - SCALE

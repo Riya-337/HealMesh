@@ -76,3 +76,16 @@ class SlackNotifier:
             logger.info("Slack diagnosis delivered for incident %s", incident.incident_id)
         except SlackApiError as e:
             logger.error("Slack API error: %s", e.response["error"])
+
+    def send_rate_limit_alert(self, channel: str, thread_ts: str, action_id: str) -> None:
+        if not self._client:
+            return
+        text = f"⚠️ *Execution Blocked*: The approved action (`{action_id}`) was blocked by the HealMesh rate limiter to prevent execution bursts. Please retry manually or investigate if this is unexpected."
+        try:
+            self._client.chat_postMessage(
+                channel=channel,
+                thread_ts=thread_ts,
+                text=text,
+            )
+        except SlackApiError as e:
+            logger.error("Slack API error (rate limit alert): %s", e.response["error"])

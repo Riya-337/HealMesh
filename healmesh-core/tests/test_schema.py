@@ -222,3 +222,39 @@ class TestScaleParams:
                 replica_count=3,
                 unexpected_field="oops",
             )
+
+
+# ── ParsedRemediationAction ─────────────────────────────────────────────────
+
+class TestParsedRemediationAction:
+    def test_none_action_with_params_rejected(self):
+        from schema.models import ParsedRemediationAction, RemediationActionType
+        with pytest.raises(ValidationError):
+            ParsedRemediationAction(
+                action_type=RemediationActionType.NONE,
+                params=ScaleParams(deployment_name="d", namespace="n", replica_count=1)
+            )
+
+    def test_scale_action_with_wrong_params_rejected(self):
+        from schema.models import ParsedRemediationAction, RemediationActionType, PatchParams
+        with pytest.raises(ValidationError):
+            ParsedRemediationAction(
+                action_type=RemediationActionType.SCALE,
+                params=PatchParams(deployment_name="d", namespace="n", image="img")
+            )
+
+    def test_patch_action_with_wrong_params_rejected(self):
+        from schema.models import ParsedRemediationAction, RemediationActionType, RedeployParams
+        with pytest.raises(ValidationError):
+            ParsedRemediationAction(
+                action_type=RemediationActionType.PATCH,
+                params=RedeployParams(deployment_name="d", namespace="n")
+            )
+
+    def test_redeploy_action_with_wrong_params_rejected(self):
+        from schema.models import ParsedRemediationAction, RemediationActionType
+        with pytest.raises(ValidationError):
+            ParsedRemediationAction(
+                action_type=RemediationActionType.REDEPLOY,
+                params=ScaleParams(deployment_name="d", namespace="n", replica_count=1)
+            )

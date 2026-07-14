@@ -46,6 +46,10 @@ func TestTakeSnapshot(t *testing.T) {
 	}
 }
 
+func init() {
+	RolloutTimeout = 1 * time.Second
+}
+
 func TestExecuteScaleAndRollback(t *testing.T) {
 	fakeClient := fake.NewSimpleClientset(&appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
@@ -122,6 +126,9 @@ func TestExecuteScaleAndRollback(t *testing.T) {
 }
 
 func TestExecuteScale_FailureRollback(t *testing.T) {
+	oldTimeout := RolloutTimeout
+	defer func() { RolloutTimeout = oldTimeout }()
+	RolloutTimeout = 500 * time.Millisecond
 	fakeClient := fake.NewSimpleClientset(&appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test-deploy",

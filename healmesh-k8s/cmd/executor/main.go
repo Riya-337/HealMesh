@@ -9,6 +9,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
+	"path/filepath"
 )
 
 func main() {
@@ -22,6 +24,11 @@ func main() {
 		config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)
 	} else {
 		config, err = rest.InClusterConfig()
+		if err != nil {
+			if home := homedir.HomeDir(); home != "" {
+				config, err = clientcmd.BuildConfigFromFlags("", filepath.Join(home, ".kube", "config"))
+			}
+		}
 	}
 	if err != nil {
 		log.Fatalf("Failed to build kubeconfig: %v", err)
@@ -32,9 +39,12 @@ func main() {
 		log.Fatalf("Failed to create kubernetes client: %v", err)
 	}
 
-	// 1. Explicit allowlist (would normally come from ConfigMap)
-	// For this phase, we'll hardcode some for demonstration, or read from env.
+	// 1. Explicit allowlist
+	allowlistStr := os.Getenv("WATCH_NAMESPACES")
 	allowlist := []string{"default", "prod", "staging"}
+	if allowlistStr != "" {
+		allowlist = append(allowlist, allowlistStr)
+	}
 
 	dsn := os.Getenv("POSTGRES_DSN")
 	var db executor.ExecutionDB
@@ -52,6 +62,7 @@ func main() {
 	execHandler := executor.NewExecutionHandler(allowlist, clientset, db)
 
 	http.Handle("/api/v1/execute", execHandler)
+	http.HandleFunc("/validate-healpolicy", executor.ValidateHealPolicy)
 
 	// 3. Explicit TLS for internal HTTP channel
 	certFile := os.Getenv("TLS_CERT_FILE")
@@ -67,11 +78,17 @@ func main() {
 		log.Printf("TLS variables not set, falling back to %s and %s", certFile, keyFile)
 	}
 
-	addr := ":8443"
-	log.Printf("Executor listening on HTTPS %s...", addr)
-	
-	// Start HTTPS server
-	if err := http.ListenAndServeTLS(addr, certFile, keyFile, nil); err != nil {
-		log.Fatalf("Server failed: %v", err)
+	if certFile == "none" || keyFile == "none" {
+		addr := ":8080"
+		log.Printf("Executor listening on HTTP %s...", addr)
+		if err := http.ListenAndServe(addr, nil); err != nil {
+			log.Fatalf("Server failed: %v", err)
+		}
+	} else {
+		addr := ":8443"
+		log.Printf("Executor listening on HTTPS %s...", addr)
+		if err := http.ListenAndServeTLS(addr, certFile, keyFile, nil); err != nil {
+			log.Fatalf("Server failed: %v", err)
+		}
 	}
 }

@@ -145,12 +145,11 @@ class RedeployParams(BaseModel):
 
 
 class HelmUpgradeParams(BaseModel):
-    """Parameters for a HELM_UPGRADE action (Phase 3+)."""
+    """Parameters for a HELM_UPGRADE action (Phase 3)."""
     model_config = {"extra": "forbid"}
     release_name: str
-    chart: str
     namespace: str
-    values: dict[str, Any] = Field(default_factory=dict)
+    target_revision: int
 
 
 class ParsedRemediationAction(BaseModel):
@@ -173,6 +172,12 @@ class ParsedRemediationAction(BaseModel):
         elif self.action_type == RemediationActionType.SCALE:
             if self.params is not None and not isinstance(self.params, ScaleParams):
                 raise ValueError("SCALE action requires ScaleParams")
+        elif self.action_type == RemediationActionType.PATCH:
+            if self.params is not None and not isinstance(self.params, PatchParams):
+                raise ValueError("PATCH action requires PatchParams")
+        elif self.action_type == RemediationActionType.REDEPLOY:
+            if self.params is not None and not isinstance(self.params, RedeployParams):
+                raise ValueError("REDEPLOY action requires RedeployParams")
         return self
 
 

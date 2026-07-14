@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from .webhook import verify_slack_signature
 from approval.workflow import process_approval
 from schema.config import get_secret
+import os
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -17,7 +18,7 @@ def get_db_connection():
     dsn = get_secret("POSTGRES_DSN", os.environ.get("POSTGRES_DSN", "postgresql://healmesh:healmesh@localhost:5432/healmesh"))
     return psycopg2.connect(dsn)
 
-async def trigger_executor(action_id: str, approval_id: str, action_params: dict):
+async def trigger_executor(action_id: str, approval_id: str, action_params: dict, channel: str = None, thread_ts: str = None):
     """
     Calls the Go executor service over HTTPS.
     Uses approval_id as the idempotency key.
@@ -37,6 +38,12 @@ async def trigger_executor(action_id: str, approval_id: str, action_params: dict
     try:
         async with httpx.AsyncClient(verify=ca_cert if ca_cert else False) as client:
             response = await client.post(f"{executor_url}/api/v1/execute", json=payload, timeout=10.0)
+            if response.status_code == 429:
+                logger.warning(f"Execution rate limited for approval {approval_id}")
+                if channel:
+                    from surface.slack.notifier import SlackNotifier
+                    SlackNotifier().send_rate_limit_alert(channel, thread_ts, action_id)
+                return
             response.raise_for_status()
             logger.info(f"Triggered executor for approval {approval_id}, status {response.status_code}")
     except Exception as e:
@@ -74,6 +81,19 @@ async def slack_interaction(request: Request):
         user_id = payload["user"]["id"]
         user_name = payload["user"].get("username", "Unknown")
         
+        channel_id = payload.get("channel", {}).get("id")
+        thread_ts = payload.get("message", {}).get("ts")
+        
+        # 0. Check Authorization Allowlist
+        allowlist_str = os.environ.get("APPROVER_ALLOWLIST", "")
+        allowed_users = [u.strip() for u in allowlist_str.split(",") if u.strip()]
+        
+        is_authorized = user_id in allowed_users
+        if not is_authorized:
+            logger.warning(f"Unauthorized approval attempt by user {user_id} ({user_name}) for action {action_id}")
+            decision = "rejected"
+            user_name = f"{user_name} (UNAUTHORIZED)"
+            
         # 1. Single atomic DB transaction for identity write and approval state
         try:
             conn = get_db_connection()
@@ -97,10 +117,10 @@ async def slack_interaction(request: Request):
             if 'conn' in locals():
                 conn.close()
                 
-        # 2. Trigger the executor if approved
-        if decision == "approved":
+        # 2. Trigger the executor if approved AND authorized
+        if decision == "approved" and is_authorized:
             import asyncio
             # Fire and forget executor call so Slack gets a quick 200 OK
-            asyncio.create_task(trigger_executor(action_id, approval_id, action_params))
+            asyncio.create_task(trigger_executor(action_id, approval_id, action_params, channel_id, thread_ts))
             
     return {"status": "ok"}

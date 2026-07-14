@@ -10,11 +10,17 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
+// RolloutTimeout is the default duration to wait for a deployment rollout to complete.
+// It is a variable so it can be overridden in tests.
+var RolloutTimeout = 2 * time.Minute
+
 // WaitForHealthCheck monitors the deployment until its ready replicas match the desired replicas,
 // or it times out.
-func WaitForHealthCheck(client kubernetes.Interface, namespace, name string, expectedReplicas int32) error {
-	// We'll poll for up to 2 seconds for tests.
-	timeout := time.After(2 * time.Second)
+func WaitForHealthCheck(client kubernetes.Interface, namespace, name string, expectedReplicas int32, timeoutDuration time.Duration) error {
+	if timeoutDuration == 0 {
+		timeoutDuration = RolloutTimeout
+	}
+	timeout := time.After(timeoutDuration)
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 
@@ -26,6 +32,11 @@ func WaitForHealthCheck(client kubernetes.Interface, namespace, name string, exp
 			deploy, err := client.AppsV1().Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 			if err != nil {
 				log.Printf("Error getting deployment %s/%s during health check: %v", namespace, name, err)
+				continue
+			}
+
+			// Check if the deployment controller has noticed our update
+			if deploy.Generation != deploy.Status.ObservedGeneration {
 				continue
 			}
 

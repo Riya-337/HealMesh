@@ -15,7 +15,13 @@ rules:
   verbs: ["get", "patch", "update"]
 - apiGroups: ["apps", "extensions"]
   resources: ["deployments"]
-  verbs: ["get", "list"]
+  verbs: ["get", "list", "patch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["healmesh.io"]
+  resources: ["healpolicies"]
+  verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding

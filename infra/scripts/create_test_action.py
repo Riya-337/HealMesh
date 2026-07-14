@@ -17,4 +17,8 @@ cur.execute("INSERT INTO healmesh.diagnoses (id, incident_id, root_cause, confid
 action_id = str(uuid.uuid4())
 cur.execute("INSERT INTO healmesh.actions (id, diagnosis_id, action_type, parse_status) VALUES (%s, %s, 'SCALE', 'parsed_ok')", (action_id, diag_id))
 
-print(action_id)
+# Insert approval
+approval_id = str(uuid.uuid4())
+cur.execute("INSERT INTO healmesh.approvals (id, action_id, decision, approver_id, approver_name, decided_at) VALUES (%s, %s, 'approved', 'U12345', 'Test User', NOW())", (approval_id, action_id))
+
+print(approval_id)

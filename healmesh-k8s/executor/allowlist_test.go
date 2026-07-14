@@ -1,6 +1,7 @@
 package executor
 
 import (
+	"encoding/json"
 	"testing"
 )
 
@@ -8,6 +9,7 @@ func TestValidatePatchAllowlist(t *testing.T) {
 	tests := []struct {
 		name       string
 		patchBody  map[string]interface{}
+		patchStr   string
 		expectPass bool
 	}{
 		{
@@ -137,52 +139,152 @@ func TestValidatePatchAllowlist(t *testing.T) {
 		},
 		{
 			name: "Denied: Add volumeMounts",
-			patchBody: map[string]interface{}{
-				"spec": map[string]interface{}{
-					"template": map[string]interface{}{
-						"spec": map[string]interface{}{
-							"containers": []interface{}{
-								map[string]interface{}{
-									"name": "my-container",
-									"volumeMounts": []interface{}{
-										map[string]interface{}{
-											"mountPath": "/etc/shadow",
-											"name":      "shadow",
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
+			patchStr: `{
+				"spec": {
+					"template": {
+						"spec": {
+							"containers": [
+								{
+									"name": "app",
+									"volumeMounts": [{"name": "vol", "mountPath": "/mnt"}]
+								}
+							]
+						}
+					}
+				}
+			}`,
 			expectPass: false,
 		},
 		{
 			name: "Denied: Top-level arbitrary field",
-			patchBody: map[string]interface{}{
-				"metadata": map[string]interface{}{
-					"labels": map[string]interface{}{
-						"evil": "true",
-					},
-				},
-			},
+			patchStr: `{
+				"metadata": {"labels": {"foo": "bar"}},
+				"spec": {
+					"template": {
+						"spec": {
+							"containers": [{"name": "app", "image": "nginx"}]
+						}
+					}
+				}
+			}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Multiple keys in spec",
+			patchStr: `{
+				"spec": {
+					"replicas": 5,
+					"template": {
+						"spec": {
+							"containers": [{"name": "app", "image": "nginx"}]
+						}
+					}
+				}
+			}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Multiple keys in template",
+			patchStr: `{
+				"spec": {
+					"template": {
+						"metadata": {"labels": {"foo": "bar"}},
+						"spec": {
+							"containers": [{"name": "app", "image": "nginx"}]
+						}
+					}
+				}
+			}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Multiple keys in pod spec",
+			patchStr: `{
+				"spec": {
+					"template": {
+						"spec": {
+							"serviceAccountName": "admin",
+							"containers": [{"name": "app", "image": "nginx"}]
+						}
+					}
+				}
+			}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Containers is not an array",
+			patchStr: `{
+				"spec": {
+					"template": {
+						"spec": {
+							"containers": {"name": "app", "image": "nginx"}
+						}
+					}
+				}
+			}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Container is not an object",
+			patchStr: `{
+				"spec": {
+					"template": {
+						"spec": {
+							"containers": ["nginx"]
+						}
+					}
+				}
+			}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Missing container name",
+			patchStr: `{
+				"spec": {
+					"template": {
+						"spec": {
+							"containers": [{"image": "nginx"}]
+						}
+					}
+				}
+			}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Invalid spec type",
+			patchStr: `{"spec": "not-an-object"}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Invalid template type",
+			patchStr: `{"spec": {"template": "not-an-object"}}`,
+			expectPass: false,
+		},
+		{
+			name: "Denied: Invalid pod spec type",
+			patchStr: `{"spec": {"template": {"spec": "not-an-object"}}}`,
 			expectPass: false,
 		},
 		{
 			name: "Denied: spec.replicas (use SCALE instead)",
-			patchBody: map[string]interface{}{
-				"spec": map[string]interface{}{
-					"replicas": 5,
-				},
-			},
+			patchStr: `{
+				"spec": {
+					"replicas": 5
+				}
+			}`,
 			expectPass: false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := ValidatePatchAllowlist(tt.patchBody)
+			patch := tt.patchBody
+			if tt.patchStr != "" {
+				if err := json.Unmarshal([]byte(tt.patchStr), &patch); err != nil {
+					t.Fatalf("failed to unmarshal patch string: %v", err)
+				}
+			}
+			err := ValidatePatchAllowlist(patch)
 			if tt.expectPass {
 				if err != nil {
 					t.Errorf("expected pass, got error: %v", err)

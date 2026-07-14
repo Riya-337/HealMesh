@@ -93,18 +93,16 @@ def _make_redeploy_payload(
 
 def _make_helm_payload(
     release_name: str = "my-release",
-    chart: str = "my-chart",
     namespace: str = "production",
-    values: dict | None = None,
+    target_revision: int = 1,
 ) -> dict:
     return {
         "suggested_action": {
             "type": "HELM_UPGRADE",
             "params": {
                 "release_name": release_name,
-                "chart": chart,
                 "namespace": namespace,
-                "values": values or {},
+                "target_revision": target_revision,
             },
         },
         "root_cause": "Helm chart misconfiguration",
@@ -166,12 +164,12 @@ class TestValidInputs:
         assert result.action_type == RemediationActionType.NONE
         assert result.parse_failed is False
 
-    def test_helm_upgrade_with_values(self):
-        result = parse_llm_response(
-            _make_helm_payload(values={"image": {"tag": "v2.0.0"}, "replicaCount": 2})
-        )
-        assert result.action_type == RemediationActionType.HELM_UPGRADE
-        assert result.params.values == {"image": {"tag": "v2.0.0"}, "replicaCount": 2}
+    def test_helm_upgrade_with_extra_fields_like_target_version_rejected(self):
+        payload = _make_helm_payload()
+        payload["suggested_action"]["params"]["target_version"] = "v2.0.0"
+        result = parse_llm_response(payload)
+        assert result.action_type == RemediationActionType.NONE
+        assert result.parse_failed is True
 
 
 # ---------------------------------------------------------------------------
@@ -597,14 +595,13 @@ class TestHelmUpgradeParamValidation:
         assert result.action_type == RemediationActionType.HELM_UPGRADE
         assert result.parse_failed is False
 
-    def test_helm_upgrade_missing_chart(self):
+    def test_helm_upgrade_missing_target_revision(self):
         payload = {
             "suggested_action": {
                 "type": "HELM_UPGRADE",
                 "params": {
                     "release_name": "my-release",
                     "namespace": "production",
-                    "values": {},
                 },
             }
         }
@@ -618,10 +615,9 @@ class TestHelmUpgradeParamValidation:
                 "type": "HELM_UPGRADE",
                 "params": {
                     "release_name": "r",
-                    "chart": "c",
+                    "target_revision": 1,
                     "namespace": "production",
-                    "values": {},
-                    "atomic": True,  # not in schema
+                    "chart": "c",  # extra field not allowed anymore
                 },
             }
         }

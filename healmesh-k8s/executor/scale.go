@@ -41,7 +41,7 @@ func ExecuteScale(client kubernetes.Interface, namespace, name string, replicas 
 	// 3. Post-action Health Check (async or sync). 
 	// For simplicity in this demo, we do it synchronously to return final status,
 	// but production might prefer async with a status callback.
-	err = WaitForHealthCheck(client, namespace, name, replicas)
+	err = WaitForHealthCheck(client, namespace, name, replicas, RolloutTimeout)
 	if err != nil {
 		log.Printf("Health check failed for %s/%s: %v. Initiating rollback...", namespace, name, err)
 		rollbackErr := RollbackScale(client, namespace, name, snapshot)

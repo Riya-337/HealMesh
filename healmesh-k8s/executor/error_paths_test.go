@@ -3,10 +3,10 @@ package executor
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	appsv1 "k8s.io/api/apps/v1"
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
-	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	k8stesting "k8s.io/client-go/testing"
@@ -98,15 +98,8 @@ func TestErrorPaths(t *testing.T) {
 	}
 
 	// HealthCheck progressing error
-	client5 := fake.NewSimpleClientset(&appsv1.Deployment{
-		ObjectMeta: metav1.ObjectMeta{Name: "missing", Namespace: "default"},
-		Status: appsv1.DeploymentStatus{
-			Conditions: []appsv1.DeploymentCondition{
-				{Type: appsv1.DeploymentProgressing, Status: corev1.ConditionFalse},
-			},
-		},
-	})
-	err = WaitForHealthCheck(client5, "default", "missing", 2)
+	client5 := fake.NewSimpleClientset()
+	err = WaitForHealthCheck(client5, "default", "missing", 2, 2*time.Second)
 	if err == nil {
 		t.Errorf("Expected timeout or progressing error in health check")
 	}

@@ -89,4 +89,95 @@ This file records every architecture decision that affects security invariants, 
 - The prompt engine rules and schema validation remain identical, keeping the closed-enum parsing invariant (Constitution Article 2, Invariant 1) intact.
 - The Phase 1.5 benchmark report will note that Groq was used for the evaluations.
 
+---
 
+## ADR-006: REDEPLOY Rollback Semantics (No Spec Rollback)
+
+**Date:** 2026-07-12  
+**Status:** Accepted  
+
+**Decision:** A `REDEPLOY` action will NOT attempt to "rollback" (i.e., revert the restart annotation) upon health check failure. Instead, it will simply fail the health check and report that the redeploy did not resolve the issue, leaving the deployment in its current state.
+
+**Rationale:** `REDEPLOY` does not modify the underlying `PodTemplateSpec` (other than injecting a restart annotation to force new pods). If the new pods fail to start, they are failing using the exact same spec as the old pods. Reverting the restart annotation would merely trigger *another* rollout of the exact same spec, creating a second wave of identical pods. This is inert at best and adds unnecessary churn at worst. A clean failure without rollback is the safest and most accurate reflection of the state.
+
+**Consequences:** The execution skeleton for `REDEPLOY` natively omits the rollback patch step upon health check failure, diverging slightly from `SCALE` and `PATCH`. Test cases will explicitly assert this non-rollback behavior.
+
+---
+
+## ADR-007: HELM_UPGRADE Scope and Blast Radius Restriction (Rollback Only)
+
+**Date:** 2026-07-12  
+**Status:** Accepted  
+
+**Decision:** The `HELM_UPGRADE` remediation action is strictly restricted to rolling back to a previous known-good revision. It **shall not** accept arbitrary chart configurations, `values.yaml` overrides, or forward upgrades to unseen chart versions (`target_version`). 
+
+**Rationale:** Permitting an LLM to generate arbitrary YAML configurations or forward upgrades to unverified chart versions introduces a massive, unbounded blast radius, contradicting the project's core safety principle (Article 4, Invariant 4 - Secure by Default). Limiting the action strictly to revision rollbacks aligns the blast radius of `HELM_UPGRADE` with that of `REDEPLOY` and `SCALE`. 
+
+**Consequences:** The `HelmUpgradeParams` struct in Go and the Pydantic schema in Python will explicitly forbid arbitrary value mappings and forward versions, restricting parameters to only three identifiers: `namespace`, `release_name`, and `target_revision` (required). HELM_UPGRADE is enabled but structurally treated as a rollback tool for now. An LLM instruction explicitly limits its use to reverting to prior stable revisions.
+
+---
+
+## ADR-009: Approver Authorization
+
+**Date:** 2026-07-12
+**Status:** Accepted
+
+**Decision:** Rely on an explicit Slack User ID allowlist (configured via `APPROVER_ALLOWLIST` environment variable) before accepting a Slack interaction as an approved remediation. Unauthorized attempts are rejected, logged loudly with a warning, and permanently written to the audit database as `decision="rejected"`.
+
+**Rationale:** Before full SSO integration, we need to guarantee that any random Slack member in the channel cannot click the "Approve" button and successfully trigger a cluster-mutating action. HMAC verification proves the message originated from Slack, but doesn't prove the user has appropriate permissions.
+
+**Consequences:** Only specifically allowlisted Slack users can approve execution. Attempted approvals by non-allowlisted users skip the executor entirely.
+
+---
+
+## ADR-010: Execution-Rate Limiting
+
+**Date:** 2026-07-12
+**Status:** Accepted
+
+**Decision:** Implement a sliding window execution-rate limiter directly within the Go executor (`healmesh-k8s/executor/handler.go`), tracking global executions and per-namespace executions over a 60-second window.
+
+**Rationale:** To prevent cascading incident bursts (or abusive behavior) from overwhelming the Kubernetes API with parallel remediation attempts. The executor is fail-closed on rate limit: exceeding it blocks execution and writes a `failed` result to the database with `error_message="rate limit exceeded"`.
+
+**IMPORTANT SAFETY CAVEAT:** The initial thresholds (5 executions per namespace per minute, 10 executions globally per minute) are a starting point for catching anomalous or abusive bursts, not a hard ceiling meant to constrain legitimate multi-deployment incident response. There is no real operational data to calibrate these numbers yet (no pilot customer or production traffic). These thresholds MUST be revisited and adjusted once real usage data exists.
+
+**Consequences:** The executor maintains in-memory timestamp lists protected by a mutex, checking this state before checking idempotency or triggering execution.
+
+---
+
+## ADR-008: Executor Skeleton Refactor Timing
+
+**Date:** 2026-07-12  
+**Status:** Accepted  
+
+**Decision:** The `HELM_UPGRADE` action will be built natively as a fourth data point alongside `SCALE`, `PATCH`, and `REDEPLOY`. The shared-skeleton refactor (extracting snapshot/health-check/rollback patterns) will be deferred until after `HELM_UPGRADE` is completed and proven. 
+
+**Rationale:** `REDEPLOY` already broke the "always snapshot + rollback" assumption since it does not rollback upon failure. `HELM_UPGRADE` will likely introduce its own nuances (e.g., interacting with Helm state rather than just raw Kubernetes Deployments). Refactoring prematurely with incomplete abstractions leads to brittle code. Four solid, native implementations provide the necessary grounded context to build a robust, flexible abstraction later.
+
+**Consequences:** `HELM_UPGRADE` implementation will proceed directly in its own file (`executor/helm_upgrade.go`) without waiting for a broader architectural refactor.
+
+---
+
+## ADR-011: HealPolicy CRD and Globally Uniform Authorization/Rate Limits
+
+**Date:** 2026-07-14  
+**Status:** Accepted  
+
+**Decision:** The `HealPolicy` CRD controls which action types are permitted per namespace. It does **not** allow per-namespace overrides for the approver allowlist or rate limits, which remain globally uniform.
+
+**Rationale:** Adding per-namespace authorization overrides would allow a compromised or malicious `HealPolicy` to weaken the list of who can approve actions in that namespace. This would undermine the uniform security floor established by ADR-009, violating the "Secure by default" invariant.
+
+**Consequences:** The CRD schema only exposes `allowedActions`. All requests must still pass the global rate limits and approver checks before the policy engine evaluates the action.
+
+---
+
+## ADR-012: Webhook Structural Guarantee and Redundant Denylist
+
+**Date:** 2026-07-14  
+**Status:** Accepted  
+
+**Decision:** A ValidatingAdmissionWebhook configured with `failurePolicy: Fail` will be deployed to strictly prevent `HealPolicy` creation/updating in denylisted namespaces (`kube-system`, `kube-public`, `healmesh`). The executor's own hardcoded denylist check will also remain fully intact.
+
+**Rationale:** The OpenAPI schema for CRDs cannot restrict `metadata.namespace`. A webhook is required to structurally guarantee that a policy cannot exist in protected namespaces. The webhook must fail closed (`failurePolicy: Fail`), as a fail-open configuration would silently remove this structural guarantee during a webhook outage. The executor's hardcoded check remains in place because the webhook only guards future `CREATE`/`UPDATE` events and cannot retroactively catch a bad policy created during a partial-rollout gap or if the webhook was temporarily bypassed. Both layers are structurally necessary.
+
+**Consequences:** `failurePolicy: Fail` is set on the webhook configuration. Executor code is unaffected and continues checking the denylist before any operation, in addition to checking the `HealPolicy`.
