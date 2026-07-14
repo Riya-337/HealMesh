@@ -46,3 +46,4 @@ logs/
 
 # PDF extracts (generated files)
 *.txt
+healmesh-k8s/executor_bin
